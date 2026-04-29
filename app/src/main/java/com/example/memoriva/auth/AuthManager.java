@@ -20,7 +20,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 public class AuthManager {
 
-    private static final String WEB_CLIENT_ID = "YOUR_WEB_CLIENT_ID";
+    private static final String WEB_CLIENT_ID = "22489532383-2jutc4p5saadn0g6j1fqlsf506b56l9b.apps.googleusercontent.com";
     private static final String PREFS_NAME = "memoriva_prefs";
     private static final String KEY_USER_ID = "user_id";
     private static final String KEY_EMAIL = "email";

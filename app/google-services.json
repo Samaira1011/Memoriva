@@ -1,31 +1,44 @@
 {
   "project_info": {
-    "project_number": "000000000000",
-    "project_id": "memoriva-placeholder",
-    "storage_bucket": "memoriva-placeholder.appspot.com"
+    "project_number": "22489532383",
+    "project_id": "memoriva-e032d",
+    "storage_bucket": "memoriva-e032d.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:000000000000:android:0000000000000000000000",
+        "mobilesdk_app_id": "1:22489532383:android:30b3402d3c31b162e3a66a",
         "android_client_info": {
           "package_name": "com.example.memoriva"
         }
       },
       "oauth_client": [
         {
-          "client_id": "000000000000-placeholder.apps.googleusercontent.com",
+          "client_id": "22489532383-af3tmhvar1k29rmkt7vvtf29r69nl4gb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.memoriva",
+            "certificate_hash": "ad3940020e885b1991452d3d554ba41f64ea4735"
+          }
+        },
+        {
+          "client_id": "22489532383-2jutc4p5saadn0g6j1fqlsf506b56l9b.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "placeholder_api_key"
+          "current_key": "AIzaSyCRzl_XqnTFYEVXGZxCuSMNF6jzdI4ew0w"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "22489532383-2jutc4p5saadn0g6j1fqlsf506b56l9b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
