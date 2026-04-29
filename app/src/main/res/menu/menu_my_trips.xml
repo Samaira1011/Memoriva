@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_sort_date"
+        android:title="Sort by Date"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_sort_name"
+        android:title="Sort by Name"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_new_trip"
+        android:title="New Trip"
+        android:icon="@drawable/ic_add"
+        app:showAsAction="ifRoom" />
+
+</menu>

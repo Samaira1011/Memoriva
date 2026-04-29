@@ -1,0 +1,92 @@
+<resources>
+    <string name="app_name">Memoriva</string>
+    <string name="tagline">Your Memories. Your Map. Your Story.</string>
+
+    <!-- Authentication -->
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="full_name">Full Name</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="create_account">Create Account</string>
+    <string name="welcome_back">Welcome Back</string>
+    <string name="sign_in_google">Sign in with Google</string>
+
+    <!-- Navigation -->
+    <string name="home">Home</string>
+    <string name="map">Map</string>
+    <string name="explore">Explore</string>
+    <string name="friends">Friends</string>
+    <string name="profile">Profile</string>
+    <string name="memories">Memories</string>
+    <string name="my_trips">My Trips</string>
+    <string name="future_trips">Future Trips</string>
+    <string name="dream_board">Dream Board</string>
+    <string name="trip_timeline">Trip Timeline</string>
+    <string name="travel_stats">Travel Stats</string>
+
+    <!-- Actions -->
+    <string name="add_trip">Add Trip</string>
+    <string name="add_memory">Add Memory</string>
+    <string name="add_dream_trip">Add Dream Trip</string>
+    <string name="mark_as_visited">Mark as Visited</string>
+    <string name="share_memory">Share Memory</string>
+    <string name="add_to_story">Add to Story</string>
+    <string name="share_travel_year">Share My Travel Year</string>
+    <string name="seal_capsule">Seal Capsule</string>
+    <string name="lock_memory">Lock this Memory</string>
+    <string name="save">Save</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="share">Share</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- Features -->
+    <string name="on_this_day">On This Day</string>
+    <string name="time_capsule">Time Capsule</string>
+    <string name="dear_future_self">Dear Future Self…</string>
+
+    <!-- Empty states -->
+    <string name="no_memories_yet">No memories yet. Start adding your first memory!</string>
+    <string name="no_trips_yet">No trips yet. Plan your first adventure!</string>
+    <string name="no_friends_yet">No friends yet. Discover people to follow!</string>
+
+    <!-- Status -->
+    <string name="loading">Loading…</string>
+
+    <!-- Error messages -->
+    <string name="error_network">No internet connection. Please check your network.</string>
+    <string name="error_invalid_email">Please enter a valid email address.</string>
+    <string name="error_password_too_short">Password must be at least 8 characters.</string>
+    <string name="error_passwords_dont_match">Passwords do not match.</string>
+    <string name="error_email_in_use">This email address is already in use.</string>
+    <string name="error_invalid_credentials">Invalid email or password.</string>
+    <string name="error_title_required">Title is required.</string>
+    <string name="error_photo_required">At least one photo is required.</string>
+    <string name="error_date_required">Date is required.</string>
+    <string name="error_future_date_required">Please select a future date.</string>
+
+    <!-- Dialogs -->
+    <string name="confirm_delete">Are you sure you want to delete this? This action cannot be undone.</string>
+
+    <!-- Task 43: New strings -->
+    <string name="on_this_day_title">On This Day 🗓️</string>
+    <string name="time_capsule_sealed">Memory sealed! Opens on %s</string>
+    <string name="shake_to_shuffle">Shake to discover a random memory</string>
+    <string name="reliving_journey">Reliving your journey...</string>
+    <string name="designed_for_explorers">DESIGNED FOR EXPLORERS</string>
+    <string name="cities_visited">Cities Visited</string>
+    <string name="countries_visited">Countries</string>
+    <string name="total_memories">Total Memories</string>
+    <string name="total_trips">Total Trips</string>
+    <string name="most_visited">Most Visited Place</string>
+    <string name="year_in_travel">Your Year in Travel</string>
+    <string name="add_friends">Add Friends</string>
+    <string name="suggested_for_you">SUGGESTED FOR YOU</string>
+    <string name="write_review">Write a Review</string>
+    <string name="submit_review">Submit Review</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="edit_profile">Edit Profile</string>
+</resources>
