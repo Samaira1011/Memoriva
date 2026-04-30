@@ -55,7 +55,9 @@ public class MemoryDetailActivity extends BaseActivity {
             setSupportActionBar(toolbar);
             if (getSupportActionBar() != null) {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                getSupportActionBar().setTitle("");
             }
+            toolbar.setNavigationOnClickListener(v -> finish());
         }
 
         tvTitle = findViewById(R.id.tvTitle);
@@ -66,11 +68,21 @@ public class MemoryDetailActivity extends BaseActivity {
 
         photoAdapter = new PhotoAdapter(this, photoPaths);
         rvPhotos.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        // Snap to full-width photos like a ViewPager
+        new androidx.recyclerview.widget.PagerSnapHelper().attachToRecyclerView(rvPhotos);
         rvPhotos.setAdapter(photoAdapter);
 
         // Share button → share as plain text
         MaterialButton btnShare = findViewById(R.id.btnShare);
         btnShare.setOnClickListener(v -> shareMemory());
+
+        // Edit button
+        MaterialButton btnEdit = findViewById(R.id.btnEdit);
+        btnEdit.setOnClickListener(v -> {
+            Intent editIntent = new Intent(this, MemoryCreateEditActivity.class);
+            editIntent.putExtra("memory_id", memoryId);
+            startActivity(editIntent);
+        });
 
         // Time Capsule button
         MaterialButton btnTimeCapsule = findViewById(R.id.btnTimeCapsule);
@@ -79,6 +91,22 @@ public class MemoryDetailActivity extends BaseActivity {
             intent.putExtra("memory_id", memoryId);
             startActivity(intent);
         });
+
+        // Delete button
+        MaterialButton btnDelete = findViewById(R.id.btnDelete);
+        btnDelete.setOnClickListener(v ->
+                new androidx.appcompat.app.AlertDialog.Builder(this)
+                        .setTitle("Delete Memory")
+                        .setMessage("Are you sure you want to delete this memory? This cannot be undone.")
+                        .setPositiveButton("Delete", (dialog, which) -> {
+                            try (SQLiteDatabase db = dbHelper.getWritableDatabase()) {
+                                memoryDao.deleteMemory(db, memoryId);
+                            }
+                            finish();
+                        })
+                        .setNegativeButton("Cancel", null)
+                        .show()
+        );
 
         BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
         setupBottomNavigation(bottomNav, R.id.nav_memories);

@@ -39,6 +39,11 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
     @Override
     public PhotoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_photo_thumbnail, parent, false);
+        // Make each photo fill the full width of the RecyclerView
+        view.getLayoutParams().width = parent.getWidth() > 0 ?
+                parent.getWidth() : android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+        view.getLayoutParams().height = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+        // Hide the remove button in detail view (only show in edit mode)
         return new PhotoViewHolder(view);
     }
 
@@ -46,19 +51,13 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
     public void onBindViewHolder(@NonNull PhotoViewHolder holder, int position) {
         String path = photoPaths.get(position);
 
-        // Load image using BitmapFactory with inSampleSize to avoid OOM
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(path, options);
-        options.inSampleSize = calculateInSampleSize(options, 200, 200);
-        options.inJustDecodeBounds = false;
-        Bitmap bitmap = BitmapFactory.decodeFile(path, options);
-
-        if (bitmap != null) {
-            holder.ivPhoto.setImageBitmap(bitmap);
-        } else {
-            holder.ivPhoto.setImageResource(R.drawable.ic_photo);
-        }
+        // Use Glide to load image — handles both file paths and content URIs
+        com.bumptech.glide.Glide.with(context)
+                .load(path.startsWith("content://") ? android.net.Uri.parse(path) : new java.io.File(path))
+                .centerCrop()
+                .placeholder(R.drawable.ic_photo)
+                .error(R.drawable.ic_photo)
+                .into(holder.ivPhoto);
 
         holder.btnRemove.setOnClickListener(v -> {
             if (removeListener != null) {

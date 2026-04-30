@@ -83,6 +83,49 @@
                         android:inputType="textCapWords" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <!-- Location picker -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:text="Location"
+                    android:textColor="@color/colorTextPrimary"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <!-- Country spinner -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilCountry"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:hint="Country">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/spinnerCountry"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textCapWords"
+                        android:completionThreshold="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- City input with autocomplete -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilCity"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:hint="City / State (optional)">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etCity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textCapWords" />
+                </com.google.android.material.textfield.TextInputLayout>
+
                 <!-- Status radio group -->
                 <TextView
                     android:layout_width="match_parent"
@@ -156,8 +199,8 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp"
-                    android:hint="Budget Estimate ($)"
+                    android:layout_marginBottom="12dp"
+                    android:hint="Budget Estimate (₹)"
                     app:boxCornerRadiusBottomEnd="12dp"
                     app:boxCornerRadiusBottomStart="12dp"
                     app:boxCornerRadiusTopEnd="12dp"

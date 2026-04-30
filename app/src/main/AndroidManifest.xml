@@ -64,6 +64,9 @@
             android:windowSoftInputMode="adjustResize" /> <!-- Map Activity - home screen with bottom navigation -->
         <activity
             android:name=".MapActivity"
+            android:exported="false" />
+        <activity
+            android:name=".WorldMapActivity"
             android:exported="false" /> <!-- Base Activity (abstract, no registration needed) -->
         <!-- Calendar Activity -->
         <activity

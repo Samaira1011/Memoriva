@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Toolbar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="My Travel Map"
+        app:titleTextColor="@color/white" />
+
+    <!-- Stats bar -->
+    <LinearLayout
+        android:id="@+id/layoutStats"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/colorPrimary"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+            <TextView android:id="@+id/tvPlacesCount"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="0" android:textColor="@color/white"
+                android:textSize="20sp" android:textStyle="bold" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="Places" android:textColor="#CCFFFFFF" android:textSize="11sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+            <TextView android:id="@+id/tvCountriesCount"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="0" android:textColor="@color/white"
+                android:textSize="20sp" android:textStyle="bold" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="Countries" android:textColor="#CCFFFFFF" android:textSize="11sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+            <TextView android:id="@+id/tvMemoriesCount"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="0" android:textColor="@color/white"
+                android:textSize="20sp" android:textStyle="bold" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="Memories" android:textColor="#CCFFFFFF" android:textSize="11sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- OSMDroid Map -->
+    <org.osmdroid.views.MapView
+        android:id="@+id/osmMapView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/bottomNav"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layoutStats" />
+
+    <!-- Bottom Navigation -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNav"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:itemIconTint="@drawable/bottom_nav_selector"
+        app:itemTextColor="@drawable/bottom_nav_selector"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_nav_menu" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

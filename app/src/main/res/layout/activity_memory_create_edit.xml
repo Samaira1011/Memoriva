@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/colorBackground">
 
-    <!-- Toolbar -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
@@ -19,7 +18,6 @@
         app:title="New Memory"
         app:titleTextColor="@color/white" />
 
-    <!-- Scrollable content -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -47,16 +45,16 @@
                 app:boxCornerRadiusBottomStart="12dp"
                 app:boxCornerRadiusTopEnd="12dp"
                 app:boxCornerRadiusTopStart="12dp">
-
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textCapSentences"
+                    android:textColor="@color/colorTextPrimary"
                     android:maxLength="100" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Date picker button -->
+            <!-- Date picker -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSelectDate"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -67,38 +65,107 @@
                 android:textColor="@color/colorTextPrimary"
                 app:strokeColor="@color/colorDivider" />
 
-            <!-- Location -->
+            <!-- Location section header -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="📍 Location"
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <!-- Country dropdown -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilCountry"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:hint="Country">
+                <AutoCompleteTextView
+                    android:id="@+id/spinnerCountry"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapWords"
+                    android:textColor="@color/colorTextPrimary"
+                    android:completionThreshold="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- City / State -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilLocation"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                android:hint="Location"
+                android:hint="City / State"
+                app:startIconDrawable="@drawable/ic_location"
                 app:boxCornerRadiusBottomEnd="12dp"
                 app:boxCornerRadiusBottomStart="12dp"
                 app:boxCornerRadiusTopEnd="12dp"
-                app:boxCornerRadiusTopStart="12dp"
-                app:startIconDrawable="@drawable/ic_location">
-
+                app:boxCornerRadiusTopStart="12dp">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/colorTextPrimary"
                     android:inputType="textCapWords" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Photos section label -->
+            <!-- Mood selector -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="😊 Mood"
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="12dp">
+
+                <TextView android:id="@+id/moodHappy"
+                    android:layout_width="0dp" android:layout_height="40dp"
+                    android:layout_weight="1" android:gravity="center"
+                    android:text="😊" android:textSize="22sp"
+                    android:background="@color/white" android:layout_marginEnd="4dp" />
+                <TextView android:id="@+id/moodExcited"
+                    android:layout_width="0dp" android:layout_height="40dp"
+                    android:layout_weight="1" android:gravity="center"
+                    android:text="🤩" android:textSize="22sp"
+                    android:background="@color/white" android:layout_marginEnd="4dp" />
+                <TextView android:id="@+id/moodPeaceful"
+                    android:layout_width="0dp" android:layout_height="40dp"
+                    android:layout_weight="1" android:gravity="center"
+                    android:text="😌" android:textSize="22sp"
+                    android:background="@color/white" android:layout_marginEnd="4dp" />
+                <TextView android:id="@+id/moodNostalgic"
+                    android:layout_width="0dp" android:layout_height="40dp"
+                    android:layout_weight="1" android:gravity="center"
+                    android:text="🥺" android:textSize="22sp"
+                    android:background="@color/white" android:layout_marginEnd="4dp" />
+                <TextView android:id="@+id/moodAdventurous"
+                    android:layout_width="0dp" android:layout_height="40dp"
+                    android:layout_weight="1" android:gravity="center"
+                    android:text="🏔️" android:textSize="22sp"
+                    android:background="@color/white" />
+            </LinearLayout>
+
+            <!-- Photos section -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:text="Photos *"
+                android:text="📸 Photos *"
                 android:textColor="@color/colorTextPrimary"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
-            <!-- Photo thumbnails RecyclerView -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvPhotos"
                 android:layout_width="match_parent"
@@ -108,7 +175,6 @@
                 android:orientation="horizontal"
                 android:paddingEnd="8dp" />
 
-            <!-- Add Photo button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnAddPhoto"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -133,12 +199,12 @@
                 app:boxCornerRadiusBottomStart="12dp"
                 app:boxCornerRadiusTopEnd="12dp"
                 app:boxCornerRadiusTopStart="12dp">
-
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etNotes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="top"
+                    android:textColor="@color/colorTextPrimary"
                     android:inputType="textMultiLine|textCapSentences"
                     android:maxLength="1000"
                     android:minLines="4" />

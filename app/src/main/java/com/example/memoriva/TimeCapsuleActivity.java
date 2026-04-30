@@ -2,8 +2,6 @@ package com.example.memoriva;
 
 import android.app.DatePickerDialog;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -111,12 +109,14 @@ public class TimeCapsuleActivity extends BaseActivity {
 
                 List<String> photos = memory.getPhotoPathList();
                 if (!photos.isEmpty()) {
-                    BitmapFactory.Options opts = new BitmapFactory.Options();
-                    opts.inSampleSize = 4;
-                    Bitmap bmp = BitmapFactory.decodeFile(photos.get(0), opts);
-                    if (bmp != null) {
-                        ivMemoryThumbnail.setImageBitmap(bmp);
-                    }
+                    String path = photos.get(0);
+                    Object source = path.startsWith("content://")
+                            ? android.net.Uri.parse(path) : new java.io.File(path);
+                    com.bumptech.glide.Glide.with(this)
+                            .load(source)
+                            .centerCrop()
+                            .placeholder(R.drawable.ic_photo)
+                            .into(ivMemoryThumbnail);
                 }
             }
 

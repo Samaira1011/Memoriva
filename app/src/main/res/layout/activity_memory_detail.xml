@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorBackground">
 
-    <!-- Photo gallery at top -->
+    <!-- Full-width photo at top -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvPhotos"
         android:layout_width="0dp"
@@ -16,6 +16,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Toolbar overlaid on photo -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#44000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_arrow_back"
+        app:navigationIconTint="@color/white" />
 
     <!-- Scrollable content below photos -->
     <androidx.core.widget.NestedScrollView
@@ -107,7 +119,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnShare"
@@ -116,19 +129,47 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
-                    android:text="Share"
+                    android:text="✈ Share"
                     android:textColor="@color/colorPrimary"
                     app:strokeColor="@color/colorPrimary" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnEdit"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="✏ Edit"
+                    android:textColor="@color/colorPrimary"
+                    app:strokeColor="@color/colorPrimary" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnTimeCapsule"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
                     android:layout_weight="1"
-                    android:text="Time Capsule"
+                    android:text="⏰ Time Capsule"
                     android:textColor="@color/colorPrimary"
                     app:strokeColor="@color/colorPrimary" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnDelete"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="🗑 Delete"
+                    android:textColor="@color/colorError"
+                    app:strokeColor="@color/colorError" />
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

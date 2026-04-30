@@ -118,8 +118,20 @@ public class SignUpActivity extends AppCompatActivity {
             btnCreateAccount.setEnabled(true);
             if (task.isSuccessful() && task.getResult() != null
                     && task.getResult().getUser() != null) {
-                authManager.saveUserToPrefs(this, task.getResult().getUser());
-                navigateToMap();
+
+                // Send verification email
+                task.getResult().getUser().sendEmailVerification()
+                        .addOnCompleteListener(verifyTask -> {
+                            // Show confirmation dialog
+                            new androidx.appcompat.app.AlertDialog.Builder(this)
+                                    .setTitle("Verify your email")
+                                    .setMessage("A verification email has been sent to " + email
+                                            + ". Please verify your email before signing in.")
+                                    .setPositiveButton("OK", (dialog, which) -> navigateToSignIn())
+                                    .setCancelable(false)
+                                    .show();
+                        });
+
             } else {
                 Exception exception = task.getException();
                 if (exception instanceof FirebaseAuthUserCollisionException) {

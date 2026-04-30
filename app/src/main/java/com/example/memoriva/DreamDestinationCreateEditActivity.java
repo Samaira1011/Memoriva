@@ -3,13 +3,12 @@ package com.example.memoriva;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -18,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 
+import com.bumptech.glide.Glide;
 import com.example.memoriva.database.DreamDestinationDao;
 import com.example.memoriva.database.MemorivaDbHelper;
 import com.example.memoriva.models.DreamDestination;
@@ -32,7 +32,8 @@ public class DreamDestinationCreateEditActivity extends BaseActivity {
 
     private static final int REQUEST_COVER_PHOTO = 20;
 
-    private TextInputEditText etPlaceName, etNotes, etBudget;
+    private TextInputEditText etPlaceName, etNotes, etBudget, etCity;
+    private AutoCompleteTextView spinnerCountry;
     private RadioGroup rgStatus;
     private RadioButton rbPlanned, rbWishlist;
     private MaterialButton btnExpectedDate, btnSave;
@@ -44,6 +45,26 @@ public class DreamDestinationCreateEditActivity extends BaseActivity {
 
     private MemorivaDbHelper dbHelper;
     private DreamDestinationDao dreamDao;
+
+    // Countries list
+    private static final String[] COUNTRIES = {
+        "Afghanistan", "Albania", "Algeria", "Argentina", "Armenia", "Australia", "Austria",
+        "Azerbaijan", "Bahrain", "Bangladesh", "Belarus", "Belgium", "Bolivia", "Bosnia",
+        "Brazil", "Bulgaria", "Cambodia", "Canada", "Chile", "China", "Colombia", "Croatia",
+        "Cuba", "Cyprus", "Czech Republic", "Denmark", "Ecuador", "Egypt", "Estonia",
+        "Ethiopia", "Finland", "France", "Georgia", "Germany", "Ghana", "Greece", "Guatemala",
+        "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel",
+        "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kuwait", "Kyrgyzstan",
+        "Latvia", "Lebanon", "Libya", "Lithuania", "Luxembourg", "Malaysia", "Maldives",
+        "Malta", "Mexico", "Moldova", "Mongolia", "Morocco", "Myanmar", "Nepal", "Netherlands",
+        "New Zealand", "Nigeria", "North Korea", "Norway", "Oman", "Pakistan", "Palestine",
+        "Panama", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania",
+        "Russia", "Saudi Arabia", "Serbia", "Singapore", "Slovakia", "Slovenia", "South Africa",
+        "South Korea", "Spain", "Sri Lanka", "Sudan", "Sweden", "Switzerland", "Syria",
+        "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Tunisia", "Turkey", "Turkmenistan",
+        "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States",
+        "Uruguay", "Uzbekistan", "Venezuela", "Vietnam", "Yemen", "Zimbabwe"
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,12 +83,20 @@ public class DreamDestinationCreateEditActivity extends BaseActivity {
         etPlaceName = findViewById(R.id.etPlaceName);
         etNotes = findViewById(R.id.etNotes);
         etBudget = findViewById(R.id.etBudget);
+        etCity = findViewById(R.id.etCity);
+        spinnerCountry = findViewById(R.id.spinnerCountry);
         rgStatus = findViewById(R.id.rgStatus);
         rbPlanned = findViewById(R.id.rbPlanned);
         rbWishlist = findViewById(R.id.rbWishlist);
         btnExpectedDate = findViewById(R.id.btnExpectedDate);
         btnSave = findViewById(R.id.btnSave);
         ivCover = findViewById(R.id.ivCover);
+
+        // Set up country autocomplete
+        ArrayAdapter<String> countryAdapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_dropdown_item_1line, COUNTRIES);
+        spinnerCountry.setAdapter(countryAdapter);
+        spinnerCountry.setThreshold(1);
 
         editDreamId = getIntent().getIntExtra("dream_id", -1);
         if (editDreamId != -1) {
@@ -98,32 +127,40 @@ public class DreamDestinationCreateEditActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == REQUEST_COVER_PHOTO && data != null && data.getData() != null) {
+        if (resultCode == RESULT_OK && requestCode == REQUEST_COVER_PHOTO
+                && data != null && data.getData() != null) {
             Uri uri = data.getData();
+            // Persist permission
             try {
-                String[] projection = {MediaStore.Images.Media.DATA};
-                android.database.Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
-                if (cursor != null) {
-                    int col = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                    cursor.moveToFirst();
-                    coverImagePath = cursor.getString(col);
-                    cursor.close();
-                }
-                Bitmap bitmap = BitmapFactory.decodeFile(coverImagePath);
-                if (bitmap != null) ivCover.setImageBitmap(bitmap);
-            } catch (Exception e) {
-                coverImagePath = uri.getPath() != null ? uri.getPath() : "";
-            }
+                getContentResolver().takePersistableUriPermission(uri,
+                        Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            } catch (Exception ignored) {}
+            coverImagePath = uri.toString();
+            // Load with Glide
+            Glide.with(this).load(uri).centerCrop().into(ivCover);
         }
     }
 
     private void saveDream() {
         String placeName = etPlaceName.getText() != null ? etPlaceName.getText().toString().trim() : "";
+        String country = spinnerCountry.getText() != null ? spinnerCountry.getText().toString().trim() : "";
+        String city = etCity.getText() != null ? etCity.getText().toString().trim() : "";
         String notes = etNotes.getText() != null ? etNotes.getText().toString().trim() : "";
         String budgetStr = etBudget.getText() != null ? etBudget.getText().toString().trim() : "";
 
+        // Auto-fill place name from country/city if empty
         if (TextUtils.isEmpty(placeName)) {
-            Snackbar.make(btnSave, "Place name is required", Snackbar.LENGTH_SHORT).show();
+            if (!TextUtils.isEmpty(city) && !TextUtils.isEmpty(country)) {
+                placeName = city + ", " + country;
+            } else if (!TextUtils.isEmpty(country)) {
+                placeName = country;
+            } else if (!TextUtils.isEmpty(city)) {
+                placeName = city;
+            }
+        }
+
+        if (TextUtils.isEmpty(placeName)) {
+            Snackbar.make(btnSave, "Place name or country is required", Snackbar.LENGTH_SHORT).show();
             return;
         }
 
@@ -133,7 +170,6 @@ public class DreamDestinationCreateEditActivity extends BaseActivity {
             try { budget = Double.parseDouble(budgetStr); } catch (NumberFormatException ignored) {}
         }
 
-        // Check for duplicate (only for new entries)
         if (editDreamId == -1) {
             try (SQLiteDatabase db = dbHelper.getReadableDatabase()) {
                 if (dreamDao.isDuplicateDestination(db, 1, placeName)) {
@@ -145,7 +181,7 @@ public class DreamDestinationCreateEditActivity extends BaseActivity {
         }
 
         DreamDestination dream = new DreamDestination();
-        dream.setUserId(1); // placeholder
+        dream.setUserId(1);
         dream.setPlaceName(placeName);
         dream.setStatus(status);
         dream.setExpectedDate(expectedDate.isEmpty() ? null : expectedDate);
@@ -181,10 +217,13 @@ public class DreamDestinationCreateEditActivity extends BaseActivity {
                 }
                 expectedDate = dream.getExpectedDate() != null ? dream.getExpectedDate() : "";
                 if (!expectedDate.isEmpty()) btnExpectedDate.setText("📅 " + expectedDate);
+
                 coverImagePath = dream.getCoverImagePath() != null ? dream.getCoverImagePath() : "";
                 if (!coverImagePath.isEmpty()) {
-                    Bitmap bitmap = BitmapFactory.decodeFile(coverImagePath);
-                    if (bitmap != null) ivCover.setImageBitmap(bitmap);
+                    // Load with Glide — handles both content:// URIs and file paths
+                    Object source = coverImagePath.startsWith("content://")
+                            ? Uri.parse(coverImagePath) : new java.io.File(coverImagePath);
+                    Glide.with(this).load(source).centerCrop().into(ivCover);
                 }
             }
         }

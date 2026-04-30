@@ -27,9 +27,18 @@ public abstract class BaseActivity extends AppCompatActivity {
         bottomNav.setSelectedItemId(selectedItemId);
         bottomNav.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
-            if (id == R.id.nav_home || id == R.id.nav_map) {
+            if (id == R.id.nav_home) {
                 if (!(this instanceof MapActivity)) {
                     Intent intent = new Intent(this, MapActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                    startActivity(intent);
+                } else if (this instanceof MapActivity) {
+                    ((MapActivity) this).showListView();
+                }
+                return true;
+            } else if (id == R.id.nav_map) {
+                if (!(this instanceof WorldMapActivity)) {
+                    Intent intent = new Intent(this, WorldMapActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                     startActivity(intent);
                 }

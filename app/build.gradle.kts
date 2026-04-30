@@ -39,6 +39,7 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.cardview)
     implementation(libs.recyclerview)
+    implementation("org.osmdroid:osmdroid-android:6.1.18")
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
@@ -50,7 +51,6 @@ dependencies {
     implementation(libs.glide)
     annotationProcessor(libs.glide.compiler)
 
-    implementation(libs.play.services.maps)
     implementation(libs.play.services.location)
     implementation(libs.play.services.auth)
 

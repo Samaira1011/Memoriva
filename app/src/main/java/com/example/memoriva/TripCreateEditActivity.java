@@ -70,6 +70,15 @@ public class TripCreateEditActivity extends BaseActivity {
             loadTripForEdit(editTripId);
         }
 
+        // Pre-fill destination if coming from map
+        String destinationExtra = getIntent().getStringExtra("destination");
+        if (destinationExtra != null && !destinationExtra.isEmpty()) {
+            etDestination.setText(destinationExtra);
+            if (etTripName.getText() == null || etTripName.getText().toString().isEmpty()) {
+                etTripName.setText("Trip to " + destinationExtra);
+            }
+        }
+
         btnStartDate.setOnClickListener(v -> showDatePicker(true));
         btnEndDate.setOnClickListener(v -> showDatePicker(false));
 
@@ -103,19 +112,11 @@ public class TripCreateEditActivity extends BaseActivity {
         if (resultCode == RESULT_OK && requestCode == REQUEST_COVER_PHOTO && data != null && data.getData() != null) {
             Uri uri = data.getData();
             try {
-                String[] projection = {MediaStore.Images.Media.DATA};
-                android.database.Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
-                if (cursor != null) {
-                    int col = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                    cursor.moveToFirst();
-                    coverPhotoPath = cursor.getString(col);
-                    cursor.close();
-                }
-                Bitmap bitmap = BitmapFactory.decodeFile(coverPhotoPath);
-                if (bitmap != null) ivCoverPhoto.setImageBitmap(bitmap);
-            } catch (Exception e) {
-                coverPhotoPath = uri.getPath() != null ? uri.getPath() : "";
-            }
+                getContentResolver().takePersistableUriPermission(uri,
+                        Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            } catch (Exception ignored) {}
+            coverPhotoPath = uri.toString();
+            com.bumptech.glide.Glide.with(this).load(uri).centerCrop().into(ivCoverPhoto);
         }
     }
 
@@ -175,8 +176,9 @@ public class TripCreateEditActivity extends BaseActivity {
                 if (!endDate.isEmpty()) btnEndDate.setText("End: " + endDate);
                 coverPhotoPath = trip.getCoverPhotoPath() != null ? trip.getCoverPhotoPath() : "";
                 if (!coverPhotoPath.isEmpty()) {
-                    Bitmap bitmap = BitmapFactory.decodeFile(coverPhotoPath);
-                    if (bitmap != null) ivCoverPhoto.setImageBitmap(bitmap);
+                    Object source = coverPhotoPath.startsWith("content://")
+                            ? android.net.Uri.parse(coverPhotoPath) : new java.io.File(coverPhotoPath);
+                    com.bumptech.glide.Glide.with(this).load(source).centerCrop().into(ivCoverPhoto);
                 }
             }
         }

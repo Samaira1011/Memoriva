@@ -151,6 +151,23 @@ public class SignInActivity extends AppCompatActivity {
             btnSignIn.setEnabled(true);
             if (task.isSuccessful() && task.getResult() != null
                     && task.getResult().getUser() != null) {
+
+                // Check email verification
+                if (!task.getResult().getUser().isEmailVerified()) {
+                    // Sign out and prompt to verify
+                    authManager.signOut();
+                    new androidx.appcompat.app.AlertDialog.Builder(this)
+                            .setTitle("Email not verified")
+                            .setMessage("Please verify your email before signing in. Check your inbox for the verification link.")
+                            .setPositiveButton("Resend Email", (dialog, which) -> {
+                                task.getResult().getUser().sendEmailVerification();
+                                Snackbar.make(btnSignIn, "Verification email resent.", Snackbar.LENGTH_LONG).show();
+                            })
+                            .setNegativeButton("OK", null)
+                            .show();
+                    return;
+                }
+
                 authManager.saveUserToPrefs(this, task.getResult().getUser());
                 navigateToMap();
             } else {

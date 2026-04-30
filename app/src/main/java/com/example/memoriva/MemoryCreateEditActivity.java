@@ -11,6 +11,9 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -46,10 +49,30 @@ public class MemoryCreateEditActivity extends BaseActivity {
     private static final String KEY_USER_ID = "user_id";
 
     private TextInputEditText etTitle, etLocation, etNotes;
+    private AutoCompleteTextView spinnerCountry;
     private MaterialButton btnSelectDate, btnSaveMemory;
     private RecyclerView rvPhotos;
     private PhotoAdapter photoAdapter;
     private List<String> photoPaths = new ArrayList<>();
+    private String selectedMood = "😊";
+
+    private static final String[] COUNTRIES = {
+        "Afghanistan","Albania","Algeria","Argentina","Armenia","Australia","Austria",
+        "Azerbaijan","Bahrain","Bangladesh","Belarus","Belgium","Bolivia","Brazil",
+        "Bulgaria","Cambodia","Canada","Chile","China","Colombia","Croatia","Cuba",
+        "Cyprus","Czech Republic","Denmark","Ecuador","Egypt","Estonia","Ethiopia",
+        "Finland","France","Georgia","Germany","Ghana","Greece","Guatemala","Hungary",
+        "Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy",
+        "Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kuwait","Latvia","Lebanon",
+        "Lithuania","Luxembourg","Malaysia","Maldives","Malta","Mexico","Morocco",
+        "Myanmar","Nepal","Netherlands","New Zealand","Nigeria","Norway","Oman",
+        "Pakistan","Panama","Peru","Philippines","Poland","Portugal","Qatar",
+        "Romania","Russia","Saudi Arabia","Serbia","Singapore","South Africa",
+        "South Korea","Spain","Sri Lanka","Sweden","Switzerland","Taiwan","Tanzania",
+        "Thailand","Tunisia","Turkey","Ukraine","United Arab Emirates",
+        "United Kingdom","United States","Uruguay","Uzbekistan","Venezuela",
+        "Vietnam","Yemen","Zimbabwe"
+    };
 
     private String selectedDate = "";
     private int editMemoryId = -1;
@@ -75,9 +98,19 @@ public class MemoryCreateEditActivity extends BaseActivity {
         etTitle = findViewById(R.id.etTitle);
         etLocation = findViewById(R.id.etLocation);
         etNotes = findViewById(R.id.etNotes);
+        spinnerCountry = findViewById(R.id.spinnerCountry);
         btnSelectDate = findViewById(R.id.btnSelectDate);
         btnSaveMemory = findViewById(R.id.btnSaveMemory);
         rvPhotos = findViewById(R.id.rvPhotos);
+
+        // Country autocomplete
+        ArrayAdapter<String> countryAdapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_dropdown_item_1line, COUNTRIES);
+        spinnerCountry.setAdapter(countryAdapter);
+        spinnerCountry.setThreshold(1);
+
+        // Mood selector
+        setupMoodSelector();
 
         // Setup photo RecyclerView
         photoAdapter = new PhotoAdapter(this, photoPaths);
@@ -114,6 +147,28 @@ public class MemoryCreateEditActivity extends BaseActivity {
         btnAddPhoto.setOnClickListener(v -> showPhotoSourceDialog());
 
         btnSaveMemory.setOnClickListener(v -> saveMemory());
+    }
+
+    private void setupMoodSelector() {
+        int[] moodIds = {R.id.moodHappy, R.id.moodExcited, R.id.moodPeaceful,
+                R.id.moodNostalgic, R.id.moodAdventurous};
+        String[] moods = {"😊", "🤩", "😌", "🥺", "🏔️"};
+
+        for (int i = 0; i < moodIds.length; i++) {
+            TextView moodView = findViewById(moodIds[i]);
+            final String mood = moods[i];
+            if (moodView != null) {
+                moodView.setOnClickListener(v -> {
+                    selectedMood = mood;
+                    // Highlight selected
+                    for (int id : moodIds) {
+                        TextView mv = findViewById(id);
+                        if (mv != null) mv.setAlpha(0.4f);
+                    }
+                    moodView.setAlpha(1.0f);
+                });
+            }
+        }
     }
 
     private void showDatePicker() {
@@ -188,18 +243,18 @@ public class MemoryCreateEditActivity extends BaseActivity {
                 int count = data.getClipData().getItemCount();
                 for (int i = 0; i < count; i++) {
                     Uri uri = data.getClipData().getItemAt(i).getUri();
-                    String path = getRealPathFromUri(uri);
-                    if (path != null) {
-                        photoPaths.add(path);
-                    }
+                    // Persist permission and store URI string directly
+                    getContentResolver().takePersistableUriPermission(uri,
+                            Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    photoPaths.add(uri.toString());
                 }
                 photoAdapter.notifyDataSetChanged();
             } else if (data.getData() != null) {
-                String path = getRealPathFromUri(data.getData());
-                if (path != null) {
-                    photoPaths.add(path);
-                    photoAdapter.notifyItemInserted(photoPaths.size() - 1);
-                }
+                Uri uri = data.getData();
+                getContentResolver().takePersistableUriPermission(uri,
+                        Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                photoPaths.add(uri.toString());
+                photoAdapter.notifyItemInserted(photoPaths.size() - 1);
             }
         }
     }
@@ -241,8 +296,21 @@ public class MemoryCreateEditActivity extends BaseActivity {
 
     private void saveMemory() {
         String title = etTitle.getText() != null ? etTitle.getText().toString().trim() : "";
-        String location = etLocation.getText() != null ? etLocation.getText().toString().trim() : "";
+        String city = etLocation.getText() != null ? etLocation.getText().toString().trim() : "";
+        String country = spinnerCountry.getText() != null ? spinnerCountry.getText().toString().trim() : "";
         String notes = etNotes.getText() != null ? etNotes.getText().toString().trim() : "";
+
+        // Combine location
+        String location = "";
+        if (!city.isEmpty() && !country.isEmpty()) location = city + ", " + country;
+        else if (!city.isEmpty()) location = city;
+        else if (!country.isEmpty()) location = country;
+
+        // Append mood to notes
+        String fullNotes = notes;
+        if (!selectedMood.isEmpty()) {
+            fullNotes = selectedMood + " " + notes;
+        }
 
         if (TextUtils.isEmpty(title)) {
             Snackbar.make(btnSaveMemory, "Title is required", Snackbar.LENGTH_SHORT).show();
@@ -272,7 +340,7 @@ public class MemoryCreateEditActivity extends BaseActivity {
         memory.setUserId(userId);
         memory.setTitle(title);
         memory.setDate(selectedDate);
-        memory.setNotes(notes);
+        memory.setNotes(fullNotes);
         memory.setPhotoPaths(photoPathsJson);
         memory.setCreatedAt(System.currentTimeMillis());
         memory.setUpdatedAt(System.currentTimeMillis());

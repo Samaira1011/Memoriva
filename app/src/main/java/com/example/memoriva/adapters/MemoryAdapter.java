@@ -68,20 +68,16 @@ public class MemoryAdapter extends RecyclerView.Adapter<MemoryAdapter.MemoryView
         holder.tvDate.setText(memory.getDate() != null ? memory.getDate() : "");
         holder.tvLocation.setText(""); // Location name would require Place lookup
 
-        // Load first photo thumbnail
+        // Load first photo thumbnail using Glide
         List<String> paths = memory.getPhotoPathList();
         if (!paths.isEmpty()) {
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inJustDecodeBounds = true;
-            BitmapFactory.decodeFile(paths.get(0), options);
-            options.inSampleSize = calculateInSampleSize(options, 160, 160);
-            options.inJustDecodeBounds = false;
-            Bitmap bitmap = BitmapFactory.decodeFile(paths.get(0), options);
-            if (bitmap != null) {
-                holder.ivThumbnail.setImageBitmap(bitmap);
-            } else {
-                holder.ivThumbnail.setImageResource(R.drawable.ic_photo);
-            }
+            String path = paths.get(0);
+            com.bumptech.glide.Glide.with(context)
+                    .load(path.startsWith("content://") ? android.net.Uri.parse(path) : new java.io.File(path))
+                    .centerCrop()
+                    .placeholder(R.drawable.ic_photo)
+                    .error(R.drawable.ic_photo)
+                    .into(holder.ivThumbnail);
         } else {
             holder.ivThumbnail.setImageResource(R.drawable.ic_photo);
         }

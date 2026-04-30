@@ -2,8 +2,6 @@ package com.example.memoriva;
 
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -100,12 +98,18 @@ public class DreamDestinationDetailActivity extends BaseActivity {
                 ? "Expected: " + dream.getExpectedDate() : "No expected date set");
         tvNotes.setText(dream.getNotes() != null ? dream.getNotes() : "");
         tvBudget.setText(dream.getBudgetEstimate() > 0
-                ? "Budget: $" + String.format("%.2f", dream.getBudgetEstimate()) : "");
+                ? "Budget: ₹" + String.format("%.2f", dream.getBudgetEstimate()) : "");
 
-        // Load cover image
+        // Load cover image using Glide — handles both content:// URIs and file paths
         if (dream.getCoverImagePath() != null && !dream.getCoverImagePath().isEmpty()) {
-            Bitmap bitmap = BitmapFactory.decodeFile(dream.getCoverImagePath());
-            if (bitmap != null) ivCover.setImageBitmap(bitmap);
+            String path = dream.getCoverImagePath();
+            Object source = path.startsWith("content://")
+                    ? android.net.Uri.parse(path) : new java.io.File(path);
+            com.bumptech.glide.Glide.with(this)
+                    .load(source)
+                    .centerCrop()
+                    .placeholder(android.R.color.darker_gray)
+                    .into(ivCover);
         }
     }
 
