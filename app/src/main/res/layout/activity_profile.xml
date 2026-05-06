@@ -42,7 +42,7 @@
                 <FrameLayout
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:layout_marginBottom="12dp">
+                    android:layout_marginBottom="16dp">
 
                     <ImageView
                         android:id="@+id/ivAvatar"
@@ -77,7 +77,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@handle"
-                    android:textColor="@color/colorTextSecondary"
+                    android:textColor="@color/colorTextPrimary"
                     android:textSize="14sp"
                     android:layout_marginBottom="4dp" />
 
@@ -86,7 +86,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=""
-                    android:textColor="@color/colorTextSecondary"
+                    android:textColor="@color/colorTextPrimary"
                     android:textSize="14sp"
                     android:textStyle="italic"
                     android:gravity="center" />
@@ -121,7 +121,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Trips"
-                        android:textColor="@color/colorTextSecondary"
+                        android:textColor="@color/colorTextPrimary"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -151,7 +151,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Friends"
-                        android:textColor="@color/colorTextSecondary"
+                        android:textColor="@color/colorTextPrimary"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -181,7 +181,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Memories"
-                        android:textColor="@color/colorTextSecondary"
+                        android:textColor="@color/colorTextPrimary"
                         android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>
@@ -198,21 +198,21 @@
                     layout="@layout/item_profile_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp" />
+                    android:layout_marginBottom="16dp" />
 
                 <include
                     android:id="@+id/cardMyTrips"
                     layout="@layout/item_profile_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp" />
+                    android:layout_marginBottom="16dp" />
 
                 <include
                     android:id="@+id/cardFutureTrips"
                     layout="@layout/item_profile_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp" />
+                    android:layout_marginBottom="16dp" />
 
                 <include
                     android:id="@+id/cardTripTimeline"
@@ -222,12 +222,14 @@
                     android:layout_marginBottom="16dp" />
 
                 <com.google.android.material.button.MaterialButton
+        app:cornerRadius="26dp"
+        app:backgroundTint="@color/colorPrimary"
                     android:id="@+id/btnSignOut"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Sign Out"
-                    android:textColor="@color/colorError" />
+                    android:textColor="@color/white" />
             </LinearLayout>
 
         </LinearLayout>

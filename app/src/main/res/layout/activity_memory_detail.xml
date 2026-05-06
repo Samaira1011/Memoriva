@@ -49,7 +49,7 @@
                 android:id="@+id/tvTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="16dp"
                 android:text="Memory Title"
                 android:textColor="@color/colorTextPrimary"
                 android:textSize="24sp"
@@ -59,7 +59,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="16dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -68,7 +68,7 @@
                     android:layout_height="16dp"
                     android:contentDescription="Date"
                     android:src="@drawable/ic_calendar"
-                    app:tint="@color/colorTextSecondary" />
+                    app:tint="@color/colorPrimary" />
 
                 <TextView
                     android:id="@+id/tvDate"
@@ -76,24 +76,26 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text="2024-01-01"
-                    android:textColor="@color/colorTextSecondary"
+                    android:textColor="@color/colorTextPrimary"
                     android:textSize="14sp" />
             </LinearLayout>
 
             <!-- Location row -->
             <LinearLayout
+                android:id="@+id/layoutLocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="16dp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:contentDescription="Location"
                     android:src="@drawable/ic_location"
-                    app:tint="@color/colorTextSecondary" />
+                    app:tint="@color/colorPrimary" />
 
                 <TextView
                     android:id="@+id/tvLocation"
@@ -101,7 +103,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text="Location"
-                    android:textColor="@color/colorTextSecondary"
+                    android:textColor="@color/colorTextPrimary"
                     android:textSize="14sp" />
             </LinearLayout>
 
@@ -120,27 +122,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="8dp">
+                android:layout_marginBottom="16dp">
 
                 <com.google.android.material.button.MaterialButton
+        app:cornerRadius="26dp"
+        app:backgroundTint="@color/colorPrimary"
                     android:id="@+id/btnShare"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
                     android:text="✈ Share"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/white"
                     app:strokeColor="@color/colorPrimary" />
 
                 <com.google.android.material.button.MaterialButton
+        app:cornerRadius="26dp"
+        app:backgroundTint="@color/colorPrimary"
                     android:id="@+id/btnEdit"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="✏ Edit"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/white"
                     app:strokeColor="@color/colorPrimary" />
             </LinearLayout>
 
@@ -148,27 +154,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="8dp">
+                android:layout_marginBottom="16dp">
 
                 <com.google.android.material.button.MaterialButton
+        app:cornerRadius="26dp"
+        app:backgroundTint="@color/colorPrimary"
                     android:id="@+id/btnTimeCapsule"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
                     android:text="⏰ Time Capsule"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/white"
                     app:strokeColor="@color/colorPrimary" />
 
                 <com.google.android.material.button.MaterialButton
+        app:cornerRadius="26dp"
+        app:backgroundTint="@color/colorPrimary"
                     android:id="@+id/btnDelete"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="🗑 Delete"
-                    android:textColor="@color/colorError"
+                    android:textColor="@color/white"
                     app:strokeColor="@color/colorError" />
             </LinearLayout>
         </LinearLayout>

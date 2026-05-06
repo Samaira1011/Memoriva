@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:text="@string/tagline"
             android:textSize="15sp"
-            android:textColor="@color/colorTextSecondary"
+            android:textColor="@color/colorTextPrimary"
             android:gravity="center"
             android:layout_marginTop="8dp" />
 
@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:text="@string/reliving_journey"
             android:textSize="12sp"
-            android:textColor="@color/colorTextSecondary"
+            android:textColor="@color/colorTextPrimary"
             android:layout_marginTop="12dp" />
 
     </LinearLayout>
@@ -77,7 +77,7 @@
         android:layout_height="wrap_content"
         android:text="@string/designed_for_explorers"
         android:textSize="11sp"
-        android:textColor="@color/colorTextSecondary"
+        android:textColor="@color/colorTextPrimary"
         android:letterSpacing="0.1"
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="32dp" />

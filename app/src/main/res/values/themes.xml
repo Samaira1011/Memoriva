@@ -11,6 +11,37 @@
         <item name="colorError">@color/colorError</item>
         <item name="android:statusBarColor">@color/colorPrimary</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+        <item name="android:textColor">@color/colorTextPrimary</item>
+        <item name="android:editTextColor">@color/colorTextPrimary</item>
+        <item name="editTextColor">@color/colorTextPrimary</item>
+        <item name="android:textColorHint">@color/colorTextSecondary</item>
+        <item name="hintTextColor">@color/colorTextSecondary</item>
+        <item name="textInputStyle">@style/Widget.Memoriva.TextInputLayout</item>
+        <item name="android:popupBackground">@color/white</item>
+        <item name="android:popupMenuStyle">@style/PopupMenuStyle</item>
+    </style>
+
+    <!-- Custom TextInputLayout style with visible hint -->
+    <style name="Widget.Memoriva.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="hintTextColor">@color/colorTextSecondary</item>
+        <item name="android:textColorHint">@color/colorTextSecondary</item>
+        <item name="boxStrokeColor">@color/text_input_stroke</item>
+        <item name="boxBackgroundColor">@color/white</item>
+        <item name="boxCornerRadiusTopStart">12dp</item>
+        <item name="boxCornerRadiusTopEnd">12dp</item>
+        <item name="boxCornerRadiusBottomStart">12dp</item>
+        <item name="boxCornerRadiusBottomEnd">12dp</item>
+    </style>
+
+    <style name="Widget.Memoriva.TextInputLayout.ExposedDropdown" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="hintTextColor">@color/colorTextSecondary</item>
+        <item name="android:textColorHint">@color/colorTextSecondary</item>
+        <item name="boxStrokeColor">@color/text_input_stroke</item>
+        <item name="boxBackgroundColor">@color/white</item>
+        <item name="boxCornerRadiusTopStart">12dp</item>
+        <item name="boxCornerRadiusTopEnd">12dp</item>
+        <item name="boxCornerRadiusBottomStart">12dp</item>
+        <item name="boxCornerRadiusBottomEnd">12dp</item>
     </style>
 
     <style name="Theme.Memoriva" parent="Base.Theme.Memoriva" />
@@ -30,4 +61,8 @@
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
     </style>
 
+
+    <style name="PopupMenuStyle" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:popupBackground">@color/white</item>
+    </style>
 </resources>

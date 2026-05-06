@@ -1,5 +1,7 @@
 package com.example.memoriva;
 
+import androidx.activity.EdgeToEdge;
+
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -7,6 +9,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.location.Address;
+import android.location.Geocoder;
+import java.util.concurrent.Executors;
+import android.os.Handler;
+import android.os.Looper;
+import com.example.memoriva.database.PlaceDao;
+import com.example.memoriva.models.Place;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -45,7 +54,16 @@ public class TripCreateEditActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_trip_create_edit);
+        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(((android.view.ViewGroup)findViewById(android.R.id.content)).getChildAt(0), (v, insets) -> {
+                androidx.core.graphics.Insets systemBars = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.systemBars());
+                boolean changed = v.getPaddingLeft() != systemBars.left || v.getPaddingTop() != systemBars.top || v.getPaddingRight() != systemBars.right || v.getPaddingBottom() != systemBars.bottom;
+                if (changed) {
+                    v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+                }
+                return insets;
+            });
 
         dbHelper = new MemorivaDbHelper(this);
         tripDao = new TripDao();
@@ -143,7 +161,8 @@ public class TripCreateEditActivity extends BaseActivity {
         }
 
         Trip trip = new Trip();
-        trip.setUserId(1); // placeholder userId
+        trip.setUserId(com.example.memoriva.utils.UserManager.getLocalUserId(
+                this, com.example.memoriva.auth.AuthManager.getInstance(this).getCurrentUser()));
         trip.setName(name);
         trip.setStartDate(startDate);
         trip.setEndDate(endDate);
@@ -152,15 +171,52 @@ public class TripCreateEditActivity extends BaseActivity {
         trip.setCoverPhotoPath(coverPhotoPath);
         trip.setCreatedAt(System.currentTimeMillis());
 
-        try (SQLiteDatabase db = dbHelper.getWritableDatabase()) {
-            if (editTripId != -1) {
-                trip.setTripId(editTripId);
-                tripDao.updateTrip(db, trip);
-            } else {
-                tripDao.insertTrip(db, trip);
+        btnSaveTrip.setEnabled(false);
+        btnSaveTrip.setText("Saving...");
+
+        final String finalDestination = destination;
+
+        Executors.newSingleThreadExecutor().execute(() -> {
+            // Geocode trip destination just to ensure a Place exists for map pins
+            if (!finalDestination.isEmpty()) {
+                double lat = 0.0, lng = 0.0;
+                try {
+                    Geocoder geocoder = new Geocoder(TripCreateEditActivity.this, Locale.getDefault());
+                    java.util.List<Address> addresses = geocoder.getFromLocationName(finalDestination, 1);
+                    if (addresses != null && !addresses.isEmpty()) {
+                        lat = addresses.get(0).getLatitude();
+                        lng = addresses.get(0).getLongitude();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                Place place = new Place();
+                place.setName(finalDestination);
+                place.setCity(finalDestination);
+                place.setCountry("");
+                place.setLatitude(lat);
+                place.setLongitude(lng);
+                place.setCreatedAt(System.currentTimeMillis());
+
+                try (SQLiteDatabase db = dbHelper.getWritableDatabase()) {
+                    PlaceDao placeDao = new PlaceDao();
+                    placeDao.insertPlace(db, place);
+                }
             }
-        }
-        finish();
+
+            new Handler(Looper.getMainLooper()).post(() -> {
+                try (SQLiteDatabase db = dbHelper.getWritableDatabase()) {
+                    if (editTripId != -1) {
+                        trip.setTripId(editTripId);
+                        tripDao.updateTrip(db, trip);
+                    } else {
+                        tripDao.insertTrip(db, trip);
+                    }
+                }
+                finish();
+            });
+        });
     }
 
     private void loadTripForEdit(int tripId) {

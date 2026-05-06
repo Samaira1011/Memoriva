@@ -1,5 +1,7 @@
 package com.example.memoriva;
 
+import androidx.activity.EdgeToEdge;
+
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -33,7 +35,16 @@ public class ReviewCreateEditActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_review_create_edit);
+        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(((android.view.ViewGroup)findViewById(android.R.id.content)).getChildAt(0), (v, insets) -> {
+                androidx.core.graphics.Insets systemBars = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.systemBars());
+                boolean changed = v.getPaddingLeft() != systemBars.left || v.getPaddingTop() != systemBars.top || v.getPaddingRight() != systemBars.right || v.getPaddingBottom() != systemBars.bottom;
+                if (changed) {
+                    v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+                }
+                return insets;
+            });
 
         placeId = getIntent().getIntExtra(EXTRA_PLACE_ID, -1);
         reviewId = getIntent().getIntExtra(EXTRA_REVIEW_ID, -1);
@@ -122,7 +133,8 @@ public class ReviewCreateEditActivity extends BaseActivity {
             } else {
                 // Insert new
                 Review review = new Review();
-                review.setUserId(1); // placeholder
+                review.setUserId(com.example.memoriva.utils.UserManager.getLocalUserId(
+                        this, com.example.memoriva.auth.AuthManager.getInstance(this).getCurrentUser()));
                 review.setPlaceId(placeId);
                 review.setRating(selectedRating);
                 review.setReviewText(reviewText);

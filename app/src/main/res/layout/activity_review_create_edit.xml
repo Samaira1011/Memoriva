@@ -35,7 +35,7 @@
             android:src="@drawable/ic_star_outline"
             android:padding="4dp"
             android:contentDescription="Star 1"
-            app:tint="@color/colorTextSecondary" />
+            app:tint="@color/colorPrimary" />
 
         <ImageView
             android:id="@+id/ivStar2"
@@ -44,7 +44,7 @@
             android:src="@drawable/ic_star_outline"
             android:padding="4dp"
             android:contentDescription="Star 2"
-            app:tint="@color/colorTextSecondary" />
+            app:tint="@color/colorPrimary" />
 
         <ImageView
             android:id="@+id/ivStar3"
@@ -53,7 +53,7 @@
             android:src="@drawable/ic_star_outline"
             android:padding="4dp"
             android:contentDescription="Star 3"
-            app:tint="@color/colorTextSecondary" />
+            app:tint="@color/colorPrimary" />
 
         <ImageView
             android:id="@+id/ivStar4"
@@ -62,7 +62,7 @@
             android:src="@drawable/ic_star_outline"
             android:padding="4dp"
             android:contentDescription="Star 4"
-            app:tint="@color/colorTextSecondary" />
+            app:tint="@color/colorPrimary" />
 
         <ImageView
             android:id="@+id/ivStar5"
@@ -71,22 +71,18 @@
             android:src="@drawable/ic_star_outline"
             android:padding="4dp"
             android:contentDescription="Star 5"
-            app:tint="@color/colorTextSecondary" />
+            app:tint="@color/colorPrimary" />
     </LinearLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilReviewText"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/Widget.Memoriva.TextInputLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="24dp"
         android:hint="Share your experience..."
-        app:boxCornerRadiusBottomEnd="12dp"
-        app:boxCornerRadiusBottomStart="12dp"
-        app:boxCornerRadiusTopEnd="12dp"
-        app:boxCornerRadiusTopStart="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layoutStars">
@@ -99,7 +95,7 @@
             android:inputType="textMultiLine|textCapSentences"
             android:maxLength="500"
             android:minLines="4"
-            android:textColor="@color/colorTextPrimary"
+            android:textColor="@color/black"
             android:textSize="14sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -113,9 +109,11 @@
         android:text="Submit Review"
         android:textColor="@color/white"
         app:backgroundTint="@color/colorPrimary"
-        app:cornerRadius="24dp"
+        app:cornerRadius="26dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tilReviewText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+

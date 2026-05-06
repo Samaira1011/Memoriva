@@ -76,7 +76,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text=""
-                            android:textColor="@color/colorTextSecondary"
+                            android:textColor="@color/colorTextPrimary"
                             android:textSize="13sp" />
                     </LinearLayout>
                 </LinearLayout>
@@ -104,10 +104,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="OPEN ON"
-                    android:textColor="@color/colorTextSecondary"
+                    android:textColor="@color/colorTextPrimary"
                     android:textSize="12sp"
                     android:letterSpacing="0.1"
-                    android:layout_marginBottom="8dp" />
+                    android:layout_marginBottom="16dp" />
 
                 <Button
                     android:id="@+id/btnOpenDate"
@@ -120,22 +120,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="DEAR FUTURE SELF..."
-                    android:textColor="@color/colorTextSecondary"
+                    android:textColor="@color/colorTextPrimary"
                     android:textSize="12sp"
                     android:letterSpacing="0.1"
-                    android:layout_marginBottom="8dp" />
+                    android:layout_marginBottom="16dp" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilMessage"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    style="@style/Widget.Memoriva.TextInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Write a message to your future self..."
-                    android:layout_marginBottom="16dp"
-                    app:boxCornerRadiusBottomEnd="12dp"
-                    app:boxCornerRadiusBottomStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
-                    app:boxCornerRadiusTopStart="12dp">
+                    android:layout_marginBottom="16dp">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etMessage"
@@ -145,7 +141,7 @@
                         android:inputType="textMultiLine|textCapSentences"
                         android:maxLength="500"
                         android:minLines="4"
-                        android:textColor="@color/colorTextPrimary"
+                        android:textColor="@color/black"
                         android:textSize="14sp" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
@@ -168,7 +164,7 @@
                     android:textColor="@color/colorTextPrimary"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:layout_marginBottom="8dp" />
+                    android:layout_marginBottom="16dp" />
 
                 <TextView
                     android:id="@+id/tvCountdown"
@@ -188,9 +184,11 @@
                 android:text="Seal Capsule"
                 android:textColor="@color/white"
                 app:backgroundTint="@color/colorPrimary"
-                app:cornerRadius="24dp" />
+                app:cornerRadius="26dp" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+

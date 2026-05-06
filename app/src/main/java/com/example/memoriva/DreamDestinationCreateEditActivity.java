@@ -1,5 +1,7 @@
 package com.example.memoriva;
 
+import androidx.activity.EdgeToEdge;
+
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -69,7 +71,16 @@ public class DreamDestinationCreateEditActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_dream_destination_create_edit);
+        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(((android.view.ViewGroup)findViewById(android.R.id.content)).getChildAt(0), (v, insets) -> {
+                androidx.core.graphics.Insets systemBars = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.systemBars());
+                boolean changed = v.getPaddingLeft() != systemBars.left || v.getPaddingTop() != systemBars.top || v.getPaddingRight() != systemBars.right || v.getPaddingBottom() != systemBars.bottom;
+                if (changed) {
+                    v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+                }
+                return insets;
+            });
 
         dbHelper = new MemorivaDbHelper(this);
         dreamDao = new DreamDestinationDao();
@@ -171,8 +182,10 @@ public class DreamDestinationCreateEditActivity extends BaseActivity {
         }
 
         if (editDreamId == -1) {
+            int localUserId = com.example.memoriva.utils.UserManager.getLocalUserId(
+                    this, com.example.memoriva.auth.AuthManager.getInstance(this).getCurrentUser());
             try (SQLiteDatabase db = dbHelper.getReadableDatabase()) {
-                if (dreamDao.isDuplicateDestination(db, 1, placeName)) {
+                if (dreamDao.isDuplicateDestination(db, localUserId, placeName)) {
                     Snackbar.make(btnSave, "You already have a dream destination for \"" + placeName + "\"",
                             Snackbar.LENGTH_LONG).show();
                     return;
@@ -181,7 +194,8 @@ public class DreamDestinationCreateEditActivity extends BaseActivity {
         }
 
         DreamDestination dream = new DreamDestination();
-        dream.setUserId(1);
+        dream.setUserId(com.example.memoriva.utils.UserManager.getLocalUserId(
+                this, com.example.memoriva.auth.AuthManager.getInstance(this).getCurrentUser()));
         dream.setPlaceName(placeName);
         dream.setStatus(status);
         dream.setExpectedDate(expectedDate.isEmpty() ? null : expectedDate);

@@ -1,5 +1,7 @@
 package com.example.memoriva;
 
+import androidx.activity.EdgeToEdge;
+
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
@@ -34,7 +36,16 @@ public class DreamBoardActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_dream_board);
+        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(((android.view.ViewGroup)findViewById(android.R.id.content)).getChildAt(0), (v, insets) -> {
+                androidx.core.graphics.Insets systemBars = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.systemBars());
+                boolean changed = v.getPaddingLeft() != systemBars.left || v.getPaddingTop() != systemBars.top || v.getPaddingRight() != systemBars.right || v.getPaddingBottom() != systemBars.bottom;
+                if (changed) {
+                    v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+                }
+                return insets;
+            });
 
         dbHelper = new MemorivaDbHelper(this);
         dreamDao = new DreamDestinationDao();

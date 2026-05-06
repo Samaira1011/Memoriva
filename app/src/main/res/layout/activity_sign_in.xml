@@ -33,7 +33,7 @@
                 android:layout_height="72dp"
                 android:src="@mipmap/ic_launcher"
                 android:contentDescription="@string/app_name"
-                android:layout_marginBottom="12dp" />
+                android:layout_marginBottom="16dp" />
 
             <!-- App name -->
             <TextView
@@ -65,26 +65,21 @@
                 android:layout_height="wrap_content"
                 android:text="Please enter your details to sign in"
                 android:textSize="14sp"
-                android:textColor="@color/colorTextSecondary"
+                android:textColor="@color/colorTextPrimary"
                 android:gravity="center"
                 android:layout_marginBottom="36dp" />
 
             <!-- Email field -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilEmail"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/Widget.Memoriva.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                app:boxCornerRadiusBottomEnd="12dp"
-                app:boxCornerRadiusBottomStart="12dp"
-                app:boxCornerRadiusTopEnd="12dp"
-                app:boxCornerRadiusTopStart="12dp"
                 app:boxStrokeColor="@color/colorDivider"
                 app:boxStrokeWidth="1dp"
-                app:hintTextColor="@color/colorTextSecondary"
                 app:startIconDrawable="@drawable/ic_email"
-                app:startIconTint="@color/colorTextSecondary">
+                app:startIconTint="@color/colorPrimary">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etEmail"
@@ -94,28 +89,23 @@
                     android:imeOptions="actionNext"
                     android:inputType="textEmailAddress"
                     android:paddingStart="4dp"
-                    android:textColor="@color/colorTextPrimary"
+                    android:textColor="@color/black"
                     android:textSize="15sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Password field -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilPassword"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/Widget.Memoriva.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                app:boxCornerRadiusTopStart="12dp"
-                app:boxCornerRadiusTopEnd="12dp"
-                app:boxCornerRadiusBottomStart="12dp"
-                app:boxCornerRadiusBottomEnd="12dp"
+                android:layout_marginBottom="16dp"
                 app:boxStrokeColor="@color/colorDivider"
                 app:boxStrokeWidth="1dp"
-                app:hintTextColor="@color/colorTextSecondary"
                 app:startIconDrawable="@drawable/ic_lock"
-                app:startIconTint="@color/colorTextSecondary"
+                app:startIconTint="@color/colorPrimary"
                 app:endIconMode="password_toggle"
-                app:endIconTint="@color/colorTextSecondary">
+                app:endIconTint="@color/colorPrimary">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etPassword"
@@ -125,7 +115,7 @@
                     android:inputType="textPassword"
                     android:imeOptions="actionDone"
                     android:textSize="15sp"
-                    android:textColor="@color/colorTextPrimary"
+                    android:textColor="@color/black"
                     android:paddingStart="4dp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -174,7 +164,7 @@
                     android:layout_height="wrap_content"
                     android:text="OR CONTINUE WITH"
                     android:textSize="11sp"
-                    android:textColor="@color/colorTextSecondary"
+                    android:textColor="@color/colorTextPrimary"
                     android:paddingStart="14dp"
                     android:paddingEnd="14dp"
                     android:letterSpacing="0.05" />
@@ -196,42 +186,42 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnGoogle"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    
                     android:layout_width="0dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
                     android:text="GOOGLE"
-                    android:textColor="@color/colorTextPrimary"
+                    android:textColor="@color/white"
                     android:textSize="13sp"
                     android:textStyle="bold"
-                    app:backgroundTint="@color/white"
+                    app:backgroundTint="@color/colorPrimary"
                     app:strokeColor="@color/colorDivider"
                     app:strokeWidth="1dp"
-                    app:cornerRadius="24dp"
+                    app:cornerRadius="26dp"
                     app:icon="@drawable/ic_google"
                     app:iconGravity="textStart"
                     app:iconSize="18dp"
-                    app:iconTint="@null"
+                    app:iconTint="@color/colorPrimary"
                     android:layout_marginEnd="10dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnApple"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    
                     android:layout_width="0dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
                     android:text="APPLE"
-                    android:textColor="@color/colorTextPrimary"
+                    android:textColor="@color/white"
                     android:textSize="13sp"
                     android:textStyle="bold"
-                    app:backgroundTint="@color/white"
+                    app:backgroundTint="@color/colorPrimary"
                     app:strokeColor="@color/colorDivider"
                     app:strokeWidth="1dp"
-                    app:cornerRadius="24dp"
+                    app:cornerRadius="26dp"
                     app:icon="@drawable/ic_apple"
                     app:iconGravity="textStart"
                     app:iconSize="18dp"
-                    app:iconTint="@null"
+                    app:iconTint="@color/colorPrimary"
                     android:layout_marginStart="10dp" />
             </LinearLayout>
 
@@ -242,7 +232,7 @@
                 android:layout_height="wrap_content"
                 android:text="Don&#39;t have an account? Sign Up"
                 android:textSize="14sp"
-                android:textColor="@color/colorTextSecondary"
+                android:textColor="@color/colorTextPrimary"
                 android:clickable="true"
                 android:focusable="true" />
 
@@ -250,3 +240,4 @@
     </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+

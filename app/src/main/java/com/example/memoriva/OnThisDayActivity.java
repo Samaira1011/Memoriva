@@ -1,5 +1,7 @@
 package com.example.memoriva;
 
+import androidx.activity.EdgeToEdge;
+
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -26,8 +28,6 @@ import java.util.Locale;
 
 public class OnThisDayActivity extends AppCompatActivity {
 
-    private static final int USER_ID = 1; // placeholder
-
     private MemorivaDbHelper dbHelper;
     private MemoryDao memoryDao;
     private MemoryAdapter memoryAdapter;
@@ -37,7 +37,16 @@ public class OnThisDayActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_on_this_day);
+        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(((android.view.ViewGroup)findViewById(android.R.id.content)).getChildAt(0), (v, insets) -> {
+                androidx.core.graphics.Insets systemBars = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.systemBars());
+                boolean changed = v.getPaddingLeft() != systemBars.left || v.getPaddingTop() != systemBars.top || v.getPaddingRight() != systemBars.right || v.getPaddingBottom() != systemBars.bottom;
+                if (changed) {
+                    v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+                }
+                return insets;
+            });
 
         dbHelper = new MemorivaDbHelper(this);
         memoryDao = new MemoryDao();
@@ -75,7 +84,9 @@ public class OnThisDayActivity extends AppCompatActivity {
 
         try (SQLiteDatabase db = dbHelper.getReadableDatabase()) {
             memories.clear();
-            memories.addAll(memoryDao.getMemoriesOnThisDay(db, USER_ID, monthDay));
+            int userId = com.example.memoriva.utils.UserManager.getLocalUserId(
+                    this, com.google.firebase.auth.FirebaseAuth.getInstance().getCurrentUser());
+            memories.addAll(memoryDao.getMemoriesOnThisDay(db, userId, monthDay));
             memoryAdapter.notifyDataSetChanged();
         }
 

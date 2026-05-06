@@ -22,14 +22,6 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tvGreeting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Good morning ✨"
-            android:textColor="#CCFFFFFF"
-            android:textSize="13sp" />
-
-        <TextView
             android:id="@+id/tvAppTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -37,6 +29,16 @@
             android:textColor="@color/white"
             android:textSize="22sp"
             android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvGreeting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Good morning ✨"
+            android:textColor="@color/white"
+            android:alpha="0.88"
+            android:textSize="13sp"
+            android:layout_marginTop="2dp" />
 
     </LinearLayout>
 
@@ -72,7 +74,7 @@
             android:gravity="center"
             android:text="🗓 On This Day"
             android:textSize="14sp"
-            android:textColor="@color/colorTextSecondary"
+            android:textColor="@color/colorTextPrimary"
             android:background="@color/white" />
 
     </LinearLayout>
@@ -100,23 +102,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="12dp">
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="8dp">
 
                 <LinearLayout
                     android:id="@+id/btnQuickTrip"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginEnd="6dp"
+                    android:layout_marginEnd="8dp"
                     android:orientation="vertical"
                     android:gravity="center"
-                    android:padding="12dp"
-                    android:background="@color/white"
-                    android:elevation="2dp">
+                    android:padding="14dp"
+                    android:background="@drawable/card_background"
+                    android:elevation="3dp">
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="✈️" android:textSize="24sp" />
+                        android:text="✈️" android:textSize="26sp" />
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="Trips" android:textSize="12sp" android:textColor="@color/colorTextPrimary" />
+                        android:text="Trips" android:textSize="11sp"
+                        android:textColor="@color/colorTextPrimary"
+                        android:layout_marginTop="4dp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -124,16 +131,18 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginEnd="6dp"
+                    android:layout_marginEnd="8dp"
                     android:orientation="vertical"
                     android:gravity="center"
-                    android:padding="12dp"
-                    android:background="@color/white"
-                    android:elevation="2dp">
+                    android:padding="14dp"
+                    android:background="@drawable/card_background"
+                    android:elevation="3dp">
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="📅" android:textSize="24sp" />
+                        android:text="📅" android:textSize="26sp" />
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="Calendar" android:textSize="12sp" android:textColor="@color/colorTextPrimary" />
+                        android:text="Calendar" android:textSize="11sp"
+                        android:textColor="@color/colorTextPrimary"
+                        android:layout_marginTop="4dp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -141,16 +150,18 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginEnd="6dp"
+                    android:layout_marginEnd="8dp"
                     android:orientation="vertical"
                     android:gravity="center"
-                    android:padding="12dp"
-                    android:background="@color/white"
-                    android:elevation="2dp">
+                    android:padding="14dp"
+                    android:background="@drawable/card_background"
+                    android:elevation="3dp">
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="🌟" android:textSize="24sp" />
+                        android:text="🌟" android:textSize="26sp" />
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="Dreams" android:textSize="12sp" android:textColor="@color/colorTextPrimary" />
+                        android:text="Dreams" android:textSize="11sp"
+                        android:textColor="@color/colorTextPrimary"
+                        android:layout_marginTop="4dp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -160,13 +171,15 @@
                     android:layout_weight="1"
                     android:orientation="vertical"
                     android:gravity="center"
-                    android:padding="12dp"
-                    android:background="@color/white"
-                    android:elevation="2dp">
+                    android:padding="14dp"
+                    android:background="@drawable/card_background"
+                    android:elevation="3dp">
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="📊" android:textSize="24sp" />
+                        android:text="📊" android:textSize="26sp" />
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="Stats" android:textSize="12sp" android:textColor="@color/colorTextPrimary" />
+                        android:text="Stats" android:textSize="11sp"
+                        android:textColor="@color/colorTextPrimary"
+                        android:layout_marginTop="4dp" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -218,7 +231,7 @@
                 android:gravity="center"
                 android:padding="32dp"
                 android:text="No memories yet!\nTap + to add your first memory 📸"
-                android:textColor="@color/colorTextSecondary"
+                android:textColor="@color/colorTextPrimary"
                 android:textSize="16sp"
                 android:visibility="gone" />
 
@@ -256,7 +269,7 @@
                 android:id="@+id/tvOnThisDayDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorTextSecondary"
+                android:textColor="@color/colorTextPrimary"
                 android:textSize="14sp"
                 android:layout_marginBottom="16dp" />
 
@@ -273,7 +286,7 @@
                 android:gravity="center"
                 android:padding="32dp"
                 android:text="No memories on this day yet.\nStart creating memories! 📸"
-                android:textColor="@color/colorTextSecondary"
+                android:textColor="@color/colorTextPrimary"
                 android:textSize="15sp"
                 android:visibility="gone" />
 

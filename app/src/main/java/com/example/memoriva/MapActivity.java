@@ -1,5 +1,7 @@
 package com.example.memoriva;
 
+import androidx.activity.EdgeToEdge;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
@@ -30,7 +32,11 @@ import java.util.Locale;
 
 public class MapActivity extends BaseActivity {
 
-    private static final int USER_ID = 1;
+    private int getUserId() {
+        com.google.firebase.auth.FirebaseUser user =
+                com.example.memoriva.auth.AuthManager.getInstance(this).getCurrentUser();
+        return com.example.memoriva.utils.UserManager.getLocalUserId(this, user);
+    }
 
     private MemorivaDbHelper dbHelper;
     private MemoryDao memoryDao;
@@ -56,7 +62,16 @@ public class MapActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_map);
+        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(((android.view.ViewGroup)findViewById(android.R.id.content)).getChildAt(0), (v, insets) -> {
+                androidx.core.graphics.Insets systemBars = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.systemBars());
+                boolean changed = v.getPaddingLeft() != systemBars.left || v.getPaddingTop() != systemBars.top || v.getPaddingRight() != systemBars.right || v.getPaddingBottom() != systemBars.bottom;
+                if (changed) {
+                    v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+                }
+                return insets;
+            });
 
         dbHelper = new MemorivaDbHelper(this);
         memoryDao = new MemoryDao();
@@ -153,7 +168,7 @@ public class MapActivity extends BaseActivity {
         tvOnThisDayDate.setText("Memories from " + todayFull + " in past years");
 
         try (SQLiteDatabase db = dbHelper.getReadableDatabase()) {
-            List<Memory> all = memoryDao.getMemoriesByUserId(db, USER_ID);
+            List<Memory> all = memoryDao.getMemoriesByUserId(db, getUserId());
             String currentYear = new SimpleDateFormat("yyyy", Locale.getDefault()).format(new Date());
             for (Memory m : all) {
                 if (m.getDate() != null && m.getDate().length() >= 10) {
@@ -214,7 +229,7 @@ public class MapActivity extends BaseActivity {
     private void loadRecentMemories() {
         memories.clear();
         try (SQLiteDatabase db = dbHelper.getReadableDatabase()) {
-            List<Memory> all = memoryDao.getMemoriesByUserId(db, USER_ID);
+            List<Memory> all = memoryDao.getMemoriesByUserId(db, getUserId());
             int limit = Math.min(5, all.size());
             for (int i = 0; i < limit; i++) memories.add(all.get(i));
         }
@@ -231,7 +246,7 @@ public class MapActivity extends BaseActivity {
 
     private void openRandomMemory() {
         try (SQLiteDatabase db = dbHelper.getReadableDatabase()) {
-            Memory random = memoryDao.getRandomMemory(db, USER_ID);
+            Memory random = memoryDao.getRandomMemory(db, getUserId());
             if (random != null) {
                 Intent intent = new Intent(this, MemoryDetailActivity.class);
                 intent.putExtra("memory_id", random.getMemoryId());
@@ -260,6 +275,7 @@ public class MapActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
+        super.onBackPressed();
         finishAffinity();
     }
 

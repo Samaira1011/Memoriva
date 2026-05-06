@@ -1,5 +1,7 @@
 package com.example.memoriva;
 
+import androidx.activity.EdgeToEdge;
+
 import android.app.DatePickerDialog;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -60,7 +62,16 @@ public class TimeCapsuleActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_time_capsule);
+        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(((android.view.ViewGroup)findViewById(android.R.id.content)).getChildAt(0), (v, insets) -> {
+                androidx.core.graphics.Insets systemBars = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.systemBars());
+                boolean changed = v.getPaddingLeft() != systemBars.left || v.getPaddingTop() != systemBars.top || v.getPaddingRight() != systemBars.right || v.getPaddingBottom() != systemBars.bottom;
+                if (changed) {
+                    v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+                }
+                return insets;
+            });
 
         memoryId = getIntent().getIntExtra(EXTRA_MEMORY_ID, -1);
 
@@ -227,7 +238,8 @@ public class TimeCapsuleActivity extends BaseActivity {
 
         TimeCapsule capsule = new TimeCapsule();
         capsule.setMemoryId(memoryId);
-        capsule.setUserId(1); // placeholder
+        capsule.setUserId(com.example.memoriva.utils.UserManager.getLocalUserId(
+                this, com.example.memoriva.auth.AuthManager.getInstance(this).getCurrentUser()));
         capsule.setOpenDate(selectedOpenDate);
         capsule.setMessage(message);
         capsule.setOpened(false);

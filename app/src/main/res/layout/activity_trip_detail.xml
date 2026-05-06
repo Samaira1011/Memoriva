@@ -48,9 +48,9 @@
                     android:id="@+id/tvDateRange"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
+                    android:layout_marginBottom="16dp"
                     android:text="Jan 1 – Jan 7, 2024"
-                    android:textColor="@color/colorTextSecondary"
+                    android:textColor="@color/colorTextPrimary"
                     android:textSize="14sp" />
 
                 <!-- Notes card -->
@@ -69,33 +69,66 @@
                         android:fontFamily="serif"
                         android:padding="12dp"
                         android:text=""
-                        android:textColor="@color/colorTextSecondary"
+                        android:textColor="@color/colorTextPrimary"
                         android:textSize="14sp"
                         android:textStyle="italic" />
                 </com.google.android.material.card.MaterialCardView>
 
                 <!-- Gallery section -->
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:text="Gallery"
-                    android:textColor="@color/colorTextPrimary"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="8dp">
 
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Gallery"
+                        android:textColor="@color/colorTextPrimary"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnAddMemoryToTrip"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:text="+ Add Memory"
+                        android:textSize="12sp"
+                        app:cornerRadius="18dp"
+                        app:strokeColor="@color/colorPrimary"
+                        android:textColor="@color/colorPrimary" />
+                </LinearLayout>
+
+                <!-- Empty gallery state -->
+                <TextView
+                    android:id="@+id/tvGalleryEmpty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="24dp"
+                    android:text="No memories linked yet.\nTap '+ Add Memory' to add one!"
+                    android:textColor="@color/colorTextPrimary"
+                    android:textSize="13sp"
+                    android:visibility="gone"
+                    android:layout_marginBottom="16dp" />
+
+                <!-- Gallery grid -->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvGallery"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    android:orientation="horizontal" />
+                    android:nestedScrollingEnabled="false" />
 
                 <!-- Places section -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="16dp"
                     android:text="Places"
                     android:textColor="@color/colorTextPrimary"
                     android:textSize="16sp"
@@ -115,24 +148,28 @@
                     android:orientation="horizontal">
 
                     <com.google.android.material.button.MaterialButton
+        app:cornerRadius="26dp"
+        app:backgroundTint="@color/colorPrimary"
                         android:id="@+id/btnShareMemory"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
                         android:layout_weight="1"
                         android:text="Share Memory"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="@color/white"
                         app:strokeColor="@color/colorPrimary" />
 
                     <com.google.android.material.button.MaterialButton
+        app:cornerRadius="26dp"
+        app:backgroundTint="@color/colorPrimary"
                         android:id="@+id/btnAddToStory"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Add to Story"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="@color/white"
                         app:strokeColor="@color/colorPrimary" />
                 </LinearLayout>
             </LinearLayout>

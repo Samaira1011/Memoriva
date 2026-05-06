@@ -1,5 +1,7 @@
 package com.example.memoriva;
 
+import androidx.activity.EdgeToEdge;
+
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -15,7 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.memoriva.adapters.PhotoAdapter;
 import com.example.memoriva.database.MemorivaDbHelper;
 import com.example.memoriva.database.MemoryDao;
+import com.example.memoriva.database.PlaceDao;
 import com.example.memoriva.models.Memory;
+import com.example.memoriva.models.Place;
 import com.example.memoriva.utils.ShareHelper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
@@ -33,8 +37,10 @@ public class MemoryDetailActivity extends BaseActivity {
     private Memory memory;
     private MemorivaDbHelper dbHelper;
     private MemoryDao memoryDao;
+    private PlaceDao placeDao;
 
     private TextView tvTitle, tvDate, tvLocation, tvNotes;
+    private android.view.View layoutLocation;
     private RecyclerView rvPhotos;
     private PhotoAdapter photoAdapter;
     private List<String> photoPaths = new ArrayList<>();
@@ -42,10 +48,20 @@ public class MemoryDetailActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_memory_detail);
+        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(((android.view.ViewGroup)findViewById(android.R.id.content)).getChildAt(0), (v, insets) -> {
+                androidx.core.graphics.Insets systemBars = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.systemBars());
+                boolean changed = v.getPaddingLeft() != systemBars.left || v.getPaddingTop() != systemBars.top || v.getPaddingRight() != systemBars.right || v.getPaddingBottom() != systemBars.bottom;
+                if (changed) {
+                    v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+                }
+                return insets;
+            });
 
         dbHelper = new MemorivaDbHelper(this);
         memoryDao = new MemoryDao();
+        placeDao = new PlaceDao();
 
         memoryId = getIntent().getIntExtra("memory_id", -1);
 
@@ -64,6 +80,7 @@ public class MemoryDetailActivity extends BaseActivity {
         tvDate = findViewById(R.id.tvDate);
         tvLocation = findViewById(R.id.tvLocation);
         tvNotes = findViewById(R.id.tvNotes);
+        layoutLocation = findViewById(R.id.layoutLocation);
         rvPhotos = findViewById(R.id.rvPhotos);
 
         photoAdapter = new PhotoAdapter(this, photoPaths);
@@ -131,6 +148,31 @@ public class MemoryDetailActivity extends BaseActivity {
         tvDate.setText(memory.getDate() != null ? memory.getDate() : "");
         tvNotes.setText(memory.getNotes() != null ? memory.getNotes() : "");
         tvLocation.setText("");
+
+        // Load place name if this memory has a linked place
+        layoutLocation.setVisibility(android.view.View.GONE);
+        if (memory.getPlaceId() > 0) {
+            try (SQLiteDatabase db = dbHelper.getReadableDatabase()) {
+                Place place = placeDao.getPlaceById(db, memory.getPlaceId());
+                if (place != null) {
+                    StringBuilder locationText = new StringBuilder();
+                    if (place.getCity() != null && !place.getCity().isEmpty()) {
+                        locationText.append(place.getCity());
+                    }
+                    if (place.getCountry() != null && !place.getCountry().isEmpty()) {
+                        if (locationText.length() > 0) locationText.append(", ");
+                        locationText.append(place.getCountry());
+                    }
+                    if (locationText.length() == 0 && place.getName() != null) {
+                        locationText.append(place.getName());
+                    }
+                    if (locationText.length() > 0) {
+                        tvLocation.setText(locationText.toString());
+                        layoutLocation.setVisibility(android.view.View.VISIBLE);
+                    }
+                }
+            }
+        }
 
         photoPaths.clear();
         photoPaths.addAll(memory.getPhotoPathList());

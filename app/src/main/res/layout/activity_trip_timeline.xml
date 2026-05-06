@@ -51,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Days"
-                android:textColor="@color/colorTextSecondary"
+                android:textColor="@color/colorTextPrimary"
                 android:textSize="12sp" />
         </LinearLayout>
 
@@ -76,7 +76,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Places"
-                android:textColor="@color/colorTextSecondary"
+                android:textColor="@color/colorTextPrimary"
                 android:textSize="12sp" />
         </LinearLayout>
 
@@ -101,7 +101,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Photos"
-                android:textColor="@color/colorTextSecondary"
+                android:textColor="@color/colorTextPrimary"
                 android:textSize="12sp" />
         </LinearLayout>
     </LinearLayout>

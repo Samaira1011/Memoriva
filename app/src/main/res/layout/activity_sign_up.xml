@@ -77,25 +77,20 @@
                     android:layout_height="wrap_content"
                     android:text="Begin your dreamy journey with Memoriva"
                     android:textSize="14sp"
-                    android:textColor="@color/colorTextSecondary"
+                    android:textColor="@color/colorTextPrimary"
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="28dp" />
 
                 <!-- Full Name -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilFullName"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    style="@style/Widget.Memoriva.TextInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    app:boxCornerRadiusTopStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
-                    app:boxCornerRadiusBottomStart="12dp"
-                    app:boxCornerRadiusBottomEnd="12dp"
                     app:boxStrokeColor="@color/colorDivider"
-                    app:hintTextColor="@color/colorTextSecondary"
                     app:startIconDrawable="@drawable/ic_person"
-                    app:startIconTint="@color/colorTextSecondary">
+                    app:startIconTint="@color/colorPrimary">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etFullName"
@@ -105,25 +100,20 @@
                         android:inputType="textPersonName"
                         android:imeOptions="actionNext"
                         android:textSize="15sp"
-                        android:textColor="@color/colorTextPrimary"
+                        android:textColor="@color/black"
                         android:paddingStart="4dp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Email -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilEmail"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    style="@style/Widget.Memoriva.TextInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    app:boxCornerRadiusTopStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
-                    app:boxCornerRadiusBottomStart="12dp"
-                    app:boxCornerRadiusBottomEnd="12dp"
                     app:boxStrokeColor="@color/colorDivider"
-                    app:hintTextColor="@color/colorTextSecondary"
                     app:startIconDrawable="@drawable/ic_email"
-                    app:startIconTint="@color/colorTextSecondary">
+                    app:startIconTint="@color/colorPrimary">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etEmail"
@@ -133,27 +123,22 @@
                         android:inputType="textEmailAddress"
                         android:imeOptions="actionNext"
                         android:textSize="15sp"
-                        android:textColor="@color/colorTextPrimary"
+                        android:textColor="@color/black"
                         android:paddingStart="4dp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Password -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilPassword"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    style="@style/Widget.Memoriva.TextInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    app:boxCornerRadiusTopStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
-                    app:boxCornerRadiusBottomStart="12dp"
-                    app:boxCornerRadiusBottomEnd="12dp"
                     app:boxStrokeColor="@color/colorDivider"
-                    app:hintTextColor="@color/colorTextSecondary"
                     app:startIconDrawable="@drawable/ic_lock"
-                    app:startIconTint="@color/colorTextSecondary"
+                    app:startIconTint="@color/colorPrimary"
                     app:endIconMode="password_toggle"
-                    app:endIconTint="@color/colorTextSecondary">
+                    app:endIconTint="@color/colorPrimary">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etPassword"
@@ -163,25 +148,20 @@
                         android:inputType="textPassword"
                         android:imeOptions="actionNext"
                         android:textSize="15sp"
-                        android:textColor="@color/colorTextPrimary"
+                        android:textColor="@color/black"
                         android:paddingStart="4dp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Confirm Password -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilConfirmPassword"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    style="@style/Widget.Memoriva.TextInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="28dp"
-                    app:boxCornerRadiusTopStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
-                    app:boxCornerRadiusBottomStart="12dp"
-                    app:boxCornerRadiusBottomEnd="12dp"
                     app:boxStrokeColor="@color/colorDivider"
-                    app:hintTextColor="@color/colorTextSecondary"
                     app:startIconDrawable="@drawable/ic_lock"
-                    app:startIconTint="@color/colorTextSecondary">
+                    app:startIconTint="@color/colorPrimary">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etConfirmPassword"
@@ -191,7 +171,7 @@
                         android:inputType="textPassword"
                         android:imeOptions="actionDone"
                         android:textSize="15sp"
-                        android:textColor="@color/colorTextPrimary"
+                        android:textColor="@color/black"
                         android:paddingStart="4dp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -216,7 +196,7 @@
                     android:layout_gravity="center_horizontal"
                     android:text="Already have an account? Login"
                     android:textSize="14sp"
-                    android:textColor="@color/colorTextSecondary"
+                    android:textColor="@color/colorTextPrimary"
                     android:clickable="true"
                     android:focusable="true"
                     android:layout_marginBottom="28dp" />
@@ -271,3 +251,4 @@
     </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+

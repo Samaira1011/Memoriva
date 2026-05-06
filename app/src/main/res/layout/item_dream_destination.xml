@@ -4,9 +4,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="6dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="4dp">
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="16dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,7 +18,7 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="160dp">
+            android:layout_height="180dp">
 
             <ImageView
                 android:id="@+id/ivCover"
@@ -25,28 +28,36 @@
                 android:contentDescription="Destination cover"
                 android:scaleType="centerCrop" />
 
+            <!-- Gradient overlay -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_gravity="bottom"
+                android:background="@drawable/gradient_bottom_overlay" />
+
             <!-- Status badge -->
             <TextView
                 android:id="@+id/tvStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|end"
-                android:layout_margin="8dp"
+                android:layout_margin="10dp"
                 android:background="@drawable/chip_selected"
-                android:paddingStart="8dp"
+                android:paddingStart="10dp"
                 android:paddingTop="4dp"
-                android:paddingEnd="8dp"
+                android:paddingEnd="10dp"
                 android:paddingBottom="4dp"
                 android:text="PLANNED"
                 android:textColor="@color/white"
-                android:textSize="12sp" />
+                android:textSize="11sp"
+                android:textStyle="bold" />
         </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="8dp">
+            android:padding="14dp">
 
             <TextView
                 android:id="@+id/tvPlaceName"
@@ -56,17 +67,32 @@
                 android:maxLines="1"
                 android:text="Place Name"
                 android:textColor="@color/colorTextPrimary"
-                android:textSize="15sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tvExpectedDate"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:text="Expected: 2025"
-                android:textColor="@color/colorTextSecondary"
-                android:textSize="12sp" />
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="4dp">
+
+                <ImageView
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:src="@drawable/ic_calendar"
+                    android:contentDescription="Date"
+                    app:tint="@color/colorPrimary" />
+
+                <TextView
+                    android:id="@+id/tvExpectedDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="Expected: 2025"
+                    android:textColor="@color/colorTextPrimary"
+                    android:textSize="12sp" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 

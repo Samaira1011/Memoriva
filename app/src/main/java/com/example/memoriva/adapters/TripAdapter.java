@@ -72,20 +72,17 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         }
         holder.tvDateRange.setText(dateRange);
 
-        // Load cover photo
+        // Load cover photo using Glide — handles content:// URIs and file paths
         String coverPath = trip.getCoverPhotoPath();
         if (coverPath != null && !coverPath.isEmpty()) {
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inJustDecodeBounds = true;
-            BitmapFactory.decodeFile(coverPath, options);
-            options.inSampleSize = calculateInSampleSize(options, 400, 280);
-            options.inJustDecodeBounds = false;
-            Bitmap bitmap = BitmapFactory.decodeFile(coverPath, options);
-            if (bitmap != null) {
-                holder.ivCover.setImageBitmap(bitmap);
-            } else {
-                holder.ivCover.setImageResource(R.drawable.ic_photo);
-            }
+            Object source = coverPath.startsWith("content://")
+                    ? android.net.Uri.parse(coverPath) : new java.io.File(coverPath);
+            com.bumptech.glide.Glide.with(context)
+                    .load(source)
+                    .centerCrop()
+                    .placeholder(R.drawable.ic_photo)
+                    .error(R.drawable.ic_photo)
+                    .into(holder.ivCover);
         } else {
             holder.ivCover.setImageResource(R.drawable.ic_photo);
         }

@@ -1,12 +1,14 @@
 package com.example.memoriva.adapters;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
@@ -14,7 +16,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.memoriva.R;
+import com.example.memoriva.database.MemorivaDbHelper;
+import com.example.memoriva.database.PlaceDao;
 import com.example.memoriva.models.Memory;
+import com.example.memoriva.models.Place;
 
 import java.util.List;
 
@@ -34,10 +39,14 @@ public class MemoryAdapter extends RecyclerView.Adapter<MemoryAdapter.MemoryView
     private List<Memory> memories;
     private OnMemoryClickListener clickListener;
     private OnMemoryLongClickListener longClickListener;
+    private final MemorivaDbHelper dbHelper;
+    private final PlaceDao placeDao;
 
     public MemoryAdapter(Context context, List<Memory> memories) {
         this.context = context;
         this.memories = memories;
+        this.dbHelper = new MemorivaDbHelper(context);
+        this.placeDao = new PlaceDao();
     }
 
     public void setOnMemoryClickListener(OnMemoryClickListener listener) {
@@ -66,7 +75,32 @@ public class MemoryAdapter extends RecyclerView.Adapter<MemoryAdapter.MemoryView
 
         holder.tvTitle.setText(memory.getTitle());
         holder.tvDate.setText(memory.getDate() != null ? memory.getDate() : "");
-        holder.tvLocation.setText(""); // Location name would require Place lookup
+
+        // Load location from linked place
+        if (memory.getPlaceId() > 0) {
+            try (SQLiteDatabase db = dbHelper.getReadableDatabase()) {
+                Place place = placeDao.getPlaceById(db, memory.getPlaceId());
+                if (place != null) {
+                    StringBuilder loc = new StringBuilder();
+                    if (place.getCity() != null && !place.getCity().isEmpty()) loc.append(place.getCity());
+                    if (place.getCountry() != null && !place.getCountry().isEmpty()) {
+                        if (loc.length() > 0) loc.append(", ");
+                        loc.append(place.getCountry());
+                    }
+                    if (loc.length() == 0 && place.getName() != null) loc.append(place.getName());
+                    if (loc.length() > 0) {
+                        holder.tvLocation.setText(loc.toString());
+                        holder.layoutLocation.setVisibility(View.VISIBLE);
+                    } else {
+                        holder.layoutLocation.setVisibility(View.GONE);
+                    }
+                } else {
+                    holder.layoutLocation.setVisibility(View.GONE);
+                }
+            }
+        } else {
+            holder.layoutLocation.setVisibility(View.GONE);
+        }
 
         // Load first photo thumbnail using Glide
         List<String> paths = memory.getPhotoPathList();
@@ -128,6 +162,7 @@ public class MemoryAdapter extends RecyclerView.Adapter<MemoryAdapter.MemoryView
     static class MemoryViewHolder extends RecyclerView.ViewHolder {
         ImageView ivThumbnail;
         TextView tvTitle, tvDate, tvLocation;
+        LinearLayout layoutLocation;
 
         MemoryViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -135,6 +170,7 @@ public class MemoryAdapter extends RecyclerView.Adapter<MemoryAdapter.MemoryView
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvDate = itemView.findViewById(R.id.tvDate);
             tvLocation = itemView.findViewById(R.id.tvLocation);
+            layoutLocation = itemView.findViewById(R.id.layoutLocation);
         }
     }
 }

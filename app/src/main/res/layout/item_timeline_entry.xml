@@ -5,7 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="8dp">
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
 
     <!-- Date column with vertical line -->
     <LinearLayout
@@ -38,7 +41,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="16dp"
         android:layout_weight="1"
         app:cardCornerRadius="8dp"
         app:cardElevation="2dp">
@@ -84,7 +87,7 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:text="Location"
-                    android:textColor="@color/colorTextSecondary"
+                    android:textColor="@color/colorTextPrimary"
                     android:textSize="12sp" />
             </LinearLayout>
         </LinearLayout>

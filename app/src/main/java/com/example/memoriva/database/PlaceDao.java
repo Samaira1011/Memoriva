@@ -83,6 +83,22 @@ public class PlaceDao {
     // -------------------------------------------------------------------------
 
     /**
+     * Returns the number of memories the user has at a specific place.
+     */
+    public int getVisitCountForPlace(SQLiteDatabase db, int placeId, int userId) {
+        String sql =
+                "SELECT COUNT(*) FROM memories " +
+                "WHERE place_id = ? AND user_id = ?";
+        Cursor cursor = db.rawQuery(sql, new String[]{
+                String.valueOf(placeId), String.valueOf(userId)});
+        try {
+            return cursor.moveToFirst() ? cursor.getInt(0) : 0;
+        } finally {
+            cursor.close();
+        }
+    }
+
+    /**
      * Returns the number of distinct countries visited by the user (via their memories).
      */
     public int getUniqueCountriesCount(SQLiteDatabase db, int userId) {

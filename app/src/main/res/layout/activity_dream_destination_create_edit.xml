@@ -50,11 +50,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|center_horizontal"
-                    android:layout_marginBottom="12dp"
+                    android:layout_marginBottom="16dp"
                     android:text="Add Cover Photo"
                     android:textColor="@color/white"
-                    app:backgroundTint="#88000000"
-                    app:cornerRadius="8dp" />
+                    app:backgroundTint="@color/colorPrimary"
+                    app:cornerRadius="26dp" />
             </FrameLayout>
 
             <LinearLayout
@@ -66,15 +66,11 @@
                 <!-- Place name -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilPlaceName"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    style="@style/Widget.Memoriva.TextInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:hint="Place Name *"
-                    app:boxCornerRadiusBottomEnd="12dp"
-                    app:boxCornerRadiusBottomStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
-                    app:boxCornerRadiusTopStart="12dp">
+                    android:layout_marginBottom="16dp"
+                    android:hint="Place Name *">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etPlaceName"
@@ -89,17 +85,17 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
                     android:text="Location"
-                    android:textColor="@color/colorTextPrimary"
+                    android:textColor="@color/black"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <!-- Country spinner -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilCountry"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    style="@style/Widget.Memoriva.TextInputLayout.ExposedDropdown"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="16dp"
                     android:hint="Country">
 
                     <AutoCompleteTextView
@@ -113,10 +109,10 @@
                 <!-- City input with autocomplete -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilCity"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    style="@style/Widget.Memoriva.TextInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
+                    android:layout_marginBottom="16dp"
                     android:hint="City / State (optional)">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -132,7 +128,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
                     android:text="Status"
-                    android:textColor="@color/colorTextPrimary"
+                    android:textColor="@color/black"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
@@ -140,7 +136,7 @@
                     android:id="@+id/rgStatus"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
+                    android:layout_marginBottom="16dp"
                     android:orientation="horizontal">
 
                     <RadioButton
@@ -162,27 +158,25 @@
 
                 <!-- Expected date -->
                 <com.google.android.material.button.MaterialButton
+        app:cornerRadius="26dp"
+        app:backgroundTint="@color/colorPrimary"
                     android:id="@+id/btnExpectedDate"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
+                    android:layout_marginBottom="16dp"
                     android:text="📅 Expected Date (optional)"
-                    android:textColor="@color/colorTextPrimary"
+                    android:textColor="@color/white"
                     app:strokeColor="@color/colorDivider" />
 
                 <!-- Notes -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilNotes"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    style="@style/Widget.Memoriva.TextInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:hint="Notes"
-                    app:boxCornerRadiusBottomEnd="12dp"
-                    app:boxCornerRadiusBottomStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
-                    app:boxCornerRadiusTopStart="12dp">
+                    android:layout_marginBottom="16dp"
+                    android:hint="Notes">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etNotes"
@@ -196,15 +190,11 @@
                 <!-- Budget -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilBudget"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    style="@style/Widget.Memoriva.TextInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:hint="Budget Estimate (₹)"
-                    app:boxCornerRadiusBottomEnd="12dp"
-                    app:boxCornerRadiusBottomStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
-                    app:boxCornerRadiusTopStart="12dp">
+                    android:layout_marginBottom="16dp"
+                    android:hint="Budget Estimate (₹)">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etBudget"
@@ -228,3 +218,5 @@
     </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+

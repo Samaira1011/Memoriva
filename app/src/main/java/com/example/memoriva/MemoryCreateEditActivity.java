@@ -1,5 +1,7 @@
 package com.example.memoriva;
 
+import androidx.activity.EdgeToEdge;
+
 import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -8,6 +10,11 @@ import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.location.Address;
+import android.location.Geocoder;
+import java.util.concurrent.Executors;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -84,7 +91,16 @@ public class MemoryCreateEditActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_memory_create_edit);
+        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(((android.view.ViewGroup)findViewById(android.R.id.content)).getChildAt(0), (v, insets) -> {
+                androidx.core.graphics.Insets systemBars = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.systemBars());
+                boolean changed = v.getPaddingLeft() != systemBars.left || v.getPaddingTop() != systemBars.top || v.getPaddingRight() != systemBars.right || v.getPaddingBottom() != systemBars.bottom;
+                if (changed) {
+                    v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+                }
+                return insets;
+            });
 
         dbHelper = new MemorivaDbHelper(this);
         memoryDao = new MemoryDao();
@@ -300,17 +316,13 @@ public class MemoryCreateEditActivity extends BaseActivity {
         String country = spinnerCountry.getText() != null ? spinnerCountry.getText().toString().trim() : "";
         String notes = etNotes.getText() != null ? etNotes.getText().toString().trim() : "";
 
-        // Combine location
         String location = "";
         if (!city.isEmpty() && !country.isEmpty()) location = city + ", " + country;
         else if (!city.isEmpty()) location = city;
         else if (!country.isEmpty()) location = country;
 
-        // Append mood to notes
         String fullNotes = notes;
-        if (!selectedMood.isEmpty()) {
-            fullNotes = selectedMood + " " + notes;
-        }
+        if (!selectedMood.isEmpty()) fullNotes = selectedMood + " " + notes;
 
         if (TextUtils.isEmpty(title)) {
             Snackbar.make(btnSaveMemory, "Title is required", Snackbar.LENGTH_SHORT).show();
@@ -325,16 +337,12 @@ public class MemoryCreateEditActivity extends BaseActivity {
             return;
         }
 
-        // Build photo paths JSON
         JSONArray jsonArray = new JSONArray();
-        for (String path : photoPaths) {
-            jsonArray.put(path);
-        }
+        for (String path : photoPaths) jsonArray.put(path);
         String photoPathsJson = jsonArray.toString();
 
-        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        // userId is stored as firebase uid string; for SQLite we use 1 as placeholder
-        int userId = 1;
+        int userId = com.example.memoriva.utils.UserManager.getLocalUserId(
+                this, com.example.memoriva.auth.AuthManager.getInstance(this).getCurrentUser());
 
         Memory memory = new Memory();
         memory.setUserId(userId);
@@ -345,25 +353,75 @@ public class MemoryCreateEditActivity extends BaseActivity {
         memory.setCreatedAt(System.currentTimeMillis());
         memory.setUpdatedAt(System.currentTimeMillis());
 
-        try (SQLiteDatabase db = dbHelper.getWritableDatabase()) {
-            if (editMemoryId != -1) {
-                memory.setMemoryId(editMemoryId);
-                int rows = memoryDao.updateMemory(db, memory);
-                if (rows > 0) {
-                    Snackbar.make(btnSaveMemory, "Memory updated!", Snackbar.LENGTH_SHORT).show();
-                    finish();
-                } else {
-                    Snackbar.make(btnSaveMemory, "Failed to update memory", Snackbar.LENGTH_SHORT).show();
+        btnSaveMemory.setEnabled(false);
+        btnSaveMemory.setText("Saving...");
+
+        final String finalLocation = location;
+        final String finalCity = city;
+        final String finalCountry = country;
+
+        Executors.newSingleThreadExecutor().execute(() -> {
+            int placeId = -1;
+            if (!finalLocation.isEmpty()) {
+                double lat = 0.0, lng = 0.0;
+                try {
+                    if (Geocoder.isPresent()) {
+                        Geocoder geocoder = new Geocoder(MemoryCreateEditActivity.this, Locale.getDefault());
+                        java.util.List<Address> addresses = geocoder.getFromLocationName(finalLocation, 1);
+                        if (addresses != null && !addresses.isEmpty()) {
+                            lat = addresses.get(0).getLatitude();
+                            lng = addresses.get(0).getLongitude();
+                        }
+                    }
+                } catch (Exception e) {
+                    // Geocoding failed — save place without coordinates
+                    e.printStackTrace();
                 }
-            } else {
-                long id = memoryDao.insertMemory(db, memory);
-                if (id > 0) {
-                    finish();
-                } else {
-                    Snackbar.make(btnSaveMemory, "Failed to save memory", Snackbar.LENGTH_SHORT).show();
+
+                com.example.memoriva.models.Place place = new com.example.memoriva.models.Place();
+                place.setName(finalLocation);
+                place.setCity(finalCity);
+                place.setCountry(finalCountry);
+                place.setLatitude(lat);
+                place.setLongitude(lng);
+                place.setCreatedAt(System.currentTimeMillis());
+
+                try (SQLiteDatabase db = dbHelper.getWritableDatabase()) {
+                    com.example.memoriva.database.PlaceDao placeDao = new com.example.memoriva.database.PlaceDao();
+                    placeId = (int) placeDao.insertPlace(db, place);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
-        }
+
+            final int finalPlaceId = placeId;
+            new Handler(Looper.getMainLooper()).post(() -> {
+                memory.setPlaceId(finalPlaceId != -1 ? finalPlaceId : 0);
+                try (SQLiteDatabase db = dbHelper.getWritableDatabase()) {
+                    if (editMemoryId != -1) {
+                        memory.setMemoryId(editMemoryId);
+                        int rows = memoryDao.updateMemory(db, memory);
+                        if (rows > 0) {
+                            Snackbar.make(btnSaveMemory, "Memory updated!", Snackbar.LENGTH_SHORT).show();
+                            finish();
+                        } else {
+                            Snackbar.make(btnSaveMemory, "Failed to update memory", Snackbar.LENGTH_SHORT).show();
+                            btnSaveMemory.setEnabled(true);
+                            btnSaveMemory.setText("Save Memory");
+                        }
+                    } else {
+                        long id = memoryDao.insertMemory(db, memory);
+                        if (id > 0) {
+                            finish();
+                        } else {
+                            Snackbar.make(btnSaveMemory, "Failed to save memory", Snackbar.LENGTH_SHORT).show();
+                            btnSaveMemory.setEnabled(true);
+                            btnSaveMemory.setText("Save Memory");
+                        }
+                    }
+                }
+            });
+        });
     }
 
     private void loadMemoryForEdit(int memoryId) {
@@ -374,6 +432,18 @@ public class MemoryCreateEditActivity extends BaseActivity {
                 etNotes.setText(memory.getNotes());
                 selectedDate = memory.getDate();
                 btnSelectDate.setText("📅 " + selectedDate);
+
+                // Restore location fields from linked place
+                if (memory.getPlaceId() > 0) {
+                    com.example.memoriva.database.PlaceDao placeDao =
+                            new com.example.memoriva.database.PlaceDao();
+                    com.example.memoriva.models.Place place =
+                            placeDao.getPlaceById(db, memory.getPlaceId());
+                    if (place != null) {
+                        if (place.getCity() != null) etLocation.setText(place.getCity());
+                        if (place.getCountry() != null) spinnerCountry.setText(place.getCountry(), false);
+                    }
+                }
 
                 List<String> paths = memory.getPhotoPathList();
                 photoPaths.addAll(paths);

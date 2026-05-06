@@ -1,20 +1,21 @@
 package com.example.memoriva;
 
+import androidx.activity.EdgeToEdge;
+
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.memoriva.adapters.PhotoAdapter;
+import com.example.memoriva.adapters.GridPhotoAdapter;
 import com.example.memoriva.database.MemorivaDbHelper;
 import com.example.memoriva.database.MemoryDao;
 import com.example.memoriva.database.TripDao;
@@ -35,15 +36,34 @@ public class TripDetailActivity extends BaseActivity {
     private MemoryDao memoryDao;
 
     private ImageView ivHero;
-    private TextView tvTripName, tvDateRange, tvNotes;
+    private TextView tvTripName, tvDateRange, tvNotes, tvGalleryEmpty;
     private RecyclerView rvGallery;
-    private PhotoAdapter galleryAdapter;
+    private GridPhotoAdapter galleryAdapter;
     private List<String> galleryPhotos = new ArrayList<>();
+
+    // Parallel list to track which memory each photo belongs to
+    private List<Integer> photoMemoryIds = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_trip_detail);
+        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(
+                ((android.view.ViewGroup) findViewById(android.R.id.content)).getChildAt(0),
+                (v, insets) -> {
+                    androidx.core.graphics.Insets systemBars =
+                            insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.systemBars());
+                    boolean changed = v.getPaddingLeft() != systemBars.left
+                            || v.getPaddingTop() != systemBars.top
+                            || v.getPaddingRight() != systemBars.right
+                            || v.getPaddingBottom() != systemBars.bottom;
+                    if (changed) {
+                        v.setPadding(systemBars.left, systemBars.top,
+                                systemBars.right, systemBars.bottom);
+                    }
+                    return insets;
+                });
 
         dbHelper = new MemorivaDbHelper(this);
         tripDao = new TripDao();
@@ -55,11 +75,27 @@ public class TripDetailActivity extends BaseActivity {
         tvTripName = findViewById(R.id.tvTripName);
         tvDateRange = findViewById(R.id.tvDateRange);
         tvNotes = findViewById(R.id.tvNotes);
+        tvGalleryEmpty = findViewById(R.id.tvGalleryEmpty);
         rvGallery = findViewById(R.id.rvGallery);
 
-        galleryAdapter = new PhotoAdapter(this, galleryPhotos);
-        rvGallery.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        // 3-column grid
+        galleryAdapter = new GridPhotoAdapter(this, galleryPhotos);
+        galleryAdapter.setOnPhotoClickListener(position -> {
+            if (position < photoMemoryIds.size()) {
+                int memId = photoMemoryIds.get(position);
+                if (memId != -1) {
+                    Intent intent = new Intent(this, MemoryDetailActivity.class);
+                    intent.putExtra("memory_id", memId);
+                    startActivity(intent);
+                }
+            }
+        });
+        rvGallery.setLayoutManager(new GridLayoutManager(this, 3));
         rvGallery.setAdapter(galleryAdapter);
+
+        // Add Memory to Trip button
+        MaterialButton btnAddMemory = findViewById(R.id.btnAddMemoryToTrip);
+        btnAddMemory.setOnClickListener(v -> showAddMemoryDialog());
 
         MaterialButton btnShareMemory = findViewById(R.id.btnShareMemory);
         btnShareMemory.setOnClickListener(v -> shareTrip());
@@ -69,7 +105,8 @@ public class TripDetailActivity extends BaseActivity {
             if (trip == null) return;
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("text/plain");
-            intent.putExtra(Intent.EXTRA_TEXT, "My trip to " + trip.getDestination() + ": " + trip.getName());
+            intent.putExtra(Intent.EXTRA_TEXT,
+                    "My trip to " + trip.getDestination() + ": " + trip.getName());
             startActivity(Intent.createChooser(intent, "Add to Story"));
         });
 
@@ -101,18 +138,91 @@ public class TripDetailActivity extends BaseActivity {
 
             // Load cover photo
             if (trip.getCoverPhotoPath() != null && !trip.getCoverPhotoPath().isEmpty()) {
-                Bitmap bitmap = BitmapFactory.decodeFile(trip.getCoverPhotoPath());
-                if (bitmap != null) ivHero.setImageBitmap(bitmap);
+                String path = trip.getCoverPhotoPath();
+                Object source = path.startsWith("content://")
+                        ? android.net.Uri.parse(path) : new java.io.File(path);
+                com.bumptech.glide.Glide.with(this)
+                        .load(source)
+                        .centerCrop()
+                        .placeholder(R.drawable.ic_photo)
+                        .into(ivHero);
             }
 
             // Collect gallery photos from all memories in this trip
             galleryPhotos.clear();
+            photoMemoryIds.clear();
             List<Memory> memories = memoryDao.getMemoriesByTripId(db, tripId);
             for (Memory memory : memories) {
-                galleryPhotos.addAll(memory.getPhotoPathList());
+                List<String> paths = memory.getPhotoPathList();
+                for (String path : paths) {
+                    galleryPhotos.add(path);
+                    photoMemoryIds.add(memory.getMemoryId());
+                }
             }
         }
+
         galleryAdapter.notifyDataSetChanged();
+        tvGalleryEmpty.setVisibility(galleryPhotos.isEmpty() ? View.VISIBLE : View.GONE);
+        rvGallery.setVisibility(galleryPhotos.isEmpty() ? View.GONE : View.VISIBLE);
+    }
+
+    private void showAddMemoryDialog() {
+        int userId = com.example.memoriva.utils.UserManager.getLocalUserId(
+                this, com.example.memoriva.auth.AuthManager.getInstance(this).getCurrentUser());
+
+        List<Memory> allMemories;
+        try (SQLiteDatabase db = dbHelper.getReadableDatabase()) {
+            allMemories = memoryDao.getMemoriesByUserId(db, userId);
+        }
+
+        if (allMemories.isEmpty()) {
+            new androidx.appcompat.app.AlertDialog.Builder(this)
+                    .setTitle("No Memories")
+                    .setMessage("You don't have any memories yet. Create a memory first!")
+                    .setPositiveButton("OK", null)
+                    .show();
+            return;
+        }
+
+        // Build display list
+        String[] memoryTitles = new String[allMemories.size()];
+        boolean[] checked = new boolean[allMemories.size()];
+
+        // Pre-check memories already linked to this trip
+        List<Integer> alreadyLinked = new ArrayList<>();
+        try (SQLiteDatabase db = dbHelper.getReadableDatabase()) {
+            List<Memory> linked = memoryDao.getMemoriesByTripId(db, tripId);
+            for (Memory m : linked) alreadyLinked.add(m.getMemoryId());
+        }
+
+        for (int i = 0; i < allMemories.size(); i++) {
+            Memory m = allMemories.get(i);
+            String date = m.getDate() != null ? " (" + m.getDate() + ")" : "";
+            memoryTitles[i] = m.getTitle() + date;
+            checked[i] = alreadyLinked.contains(m.getMemoryId());
+        }
+
+        final boolean[] selection = checked.clone();
+
+        new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("Add Memories to Trip")
+                .setMultiChoiceItems(memoryTitles, checked,
+                        (dialog, which, isChecked) -> selection[which] = isChecked)
+                .setPositiveButton("Save", (dialog, which) -> {
+                    try (SQLiteDatabase db = dbHelper.getWritableDatabase()) {
+                        for (int i = 0; i < allMemories.size(); i++) {
+                            int memId = allMemories.get(i).getMemoryId();
+                            if (selection[i]) {
+                                tripDao.addMemoryToTrip(db, memId, tripId);
+                            } else {
+                                tripDao.removeMemoryFromTrip(db, memId, tripId);
+                            }
+                        }
+                    }
+                    loadTripData(); // Refresh gallery
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
     }
 
     private void shareTrip() {
@@ -158,6 +268,12 @@ public class TripDetailActivity extends BaseActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadTripData();
     }
 
     @Override

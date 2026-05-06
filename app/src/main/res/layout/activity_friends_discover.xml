@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="16dp"
         android:gravity="center"
         android:text="Find your travel buddies!"
         android:textColor="@color/colorTextPrimary"
@@ -60,7 +60,7 @@
         android:layout_marginBottom="32dp"
         android:gravity="center"
         android:text="Friends feature coming soon"
-        android:textColor="@color/colorTextSecondary"
+        android:textColor="@color/colorTextPrimary"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@id/btnGoBack"
         app:layout_constraintEnd_toEndOf="parent"
@@ -68,12 +68,14 @@
 
     <!-- Go Back button -->
     <com.google.android.material.button.MaterialButton
+        app:cornerRadius="26dp"
+        app:backgroundTint="@color/colorPrimary"
         android:id="@+id/btnGoBack"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Go Back"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/white"
         app:strokeColor="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

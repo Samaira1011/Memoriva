@@ -50,7 +50,7 @@
                     android:id="@+id/tvStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="16dp"
                     android:background="@drawable/chip_selected"
                     android:paddingStart="12dp"
                     android:paddingTop="4dp"
@@ -65,7 +65,7 @@
                     android:id="@+id/tvPlaceName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="16dp"
                     android:text="Place Name"
                     android:textColor="@color/colorTextPrimary"
                     android:textSize="22sp"
@@ -76,9 +76,9 @@
                     android:id="@+id/tvExpectedDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
+                    android:layout_marginBottom="16dp"
                     android:text="Expected: 2025"
-                    android:textColor="@color/colorTextSecondary"
+                    android:textColor="@color/colorTextPrimary"
                     android:textSize="14sp" />
 
                 <!-- Notes -->
@@ -86,7 +86,7 @@
                     android:id="@+id/tvNotes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
+                    android:layout_marginBottom="16dp"
                     android:text=""
                     android:textColor="@color/colorTextPrimary"
                     android:textSize="15sp" />
@@ -98,7 +98,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="24dp"
                     android:text=""
-                    android:textColor="@color/colorTextSecondary"
+                    android:textColor="@color/colorTextPrimary"
                     android:textSize="14sp" />
 
                 <!-- Mark as Visited button -->
@@ -106,7 +106,7 @@
                     android:id="@+id/btnMarkVisited"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
-                    android:layout_marginBottom="12dp"
+                    android:layout_marginBottom="16dp"
                     android:text="Mark as Visited"
                     android:textColor="@color/white"
                     android:textSize="16sp"
@@ -120,24 +120,28 @@
                     android:orientation="horizontal">
 
                     <com.google.android.material.button.MaterialButton
+        app:cornerRadius="26dp"
+        app:backgroundTint="@color/colorPrimary"
                         android:id="@+id/btnEdit"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
                         android:layout_weight="1"
                         android:text="Edit"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="@color/white"
                         app:strokeColor="@color/colorPrimary" />
 
                     <com.google.android.material.button.MaterialButton
+        app:cornerRadius="26dp"
+        app:backgroundTint="@color/colorPrimary"
                         android:id="@+id/btnDelete"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Delete"
-                        android:textColor="@color/colorError"
+                        android:textColor="@color/white"
                         app:strokeColor="@color/colorError" />
                 </LinearLayout>
             </LinearLayout>

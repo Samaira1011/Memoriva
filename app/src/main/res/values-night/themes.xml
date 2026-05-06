@@ -8,6 +8,11 @@
         <item name="colorOnPrimary">@color/colorOnPrimary</item>
         <item name="colorError">@color/colorError</item>
         <item name="android:statusBarColor">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorTextPrimary</item>
+        <item name="android:editTextColor">@color/colorTextPrimary</item>
+        <item name="editTextColor">@color/colorTextPrimary</item>
+        <item name="android:textColorHint">@color/colorTextSecondary</item>
+        <item name="hintTextColor">@color/colorTextSecondary</item>
     </style>
 
     <style name="SplashTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">

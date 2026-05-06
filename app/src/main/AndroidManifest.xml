@@ -7,6 +7,9 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- Camera permission -->
     <uses-permission android:name="android.permission.CAMERA" /> <!-- Media/storage permissions -->
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
     <!-- READ_MEDIA_IMAGES for API 33+ -->
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" /> <!-- READ_EXTERNAL_STORAGE for API < 33 -->
     <uses-permission
